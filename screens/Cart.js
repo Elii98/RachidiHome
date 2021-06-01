@@ -20,7 +20,7 @@ const Cart = (props) => {
 		if (redStore.getState().cartItems) {
 			const getCartItems = async () => {
 				const ids = redStore.getState().cartItems
-				const r = await axios.get(`${server}/getCartItems.php`, { params: { ids: ids } })
+				const r = await axios.post(`${server}/getCartItems.php`, { test: "123" })
 				console.log(`ids`, ids)
 				setState((state) => ({
 					...state,

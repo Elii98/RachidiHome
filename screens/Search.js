@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { View, Text, StyleSheet, ScrollView, TextInput } from "react-native"
 import Header from "../components/Header"
 import Item from "../components/Item"
@@ -7,8 +7,15 @@ import Icon from "react-native-vector-icons/FontAwesome"
 import axios from "axios"
 import { server } from "../settings"
 import { SafeAreaView } from "react-native-safe-area-context"
+import RBSheet from "react-native-raw-bottom-sheet"
+import { Pressable } from "react-native"
+import Sort from "./Sort"
+import Filter from "./Filter"
+import { StatusBar } from "expo-status-bar"
 
 const Search = (props) => {
+	const sortRef = useRef()
+	const filterRef = useRef()
 	const { route, navigation } = props
 	const [state, setState] = useState({
 		items: []
@@ -27,6 +34,7 @@ const Search = (props) => {
 		<SafeAreaView>
 			<Header />
 			<ScrollView contentContainerStyle={styles.container}>
+				<StatusBar style="auto" />
 				<View style={styles.strip}>
 					<View style={styles.title}>
 						<Icon
@@ -37,16 +45,23 @@ const Search = (props) => {
 						/>
 						<Text style={Defaults.title}>{route.params.text}</Text>
 					</View>
-					<View style={styles.row}>
-						<View style={styles.iconHolder}>
-							<Icon style={styles.icon} name="angle-down" size={20} />
-							<Text style={styles.clear}>Sort</Text>
-						</View>
-						<View style={styles.iconHolder}>
-							<Icon style={styles.icon} name="angle-down" size={20} />
-							<Text style={styles.clear}>Filter</Text>
-						</View>
-					</View>
+				</View>
+
+				<View style={styles.row}>
+					<Pressable
+						onPress={() => {
+							sortRef.current.open()
+						}}
+						style={[styles.iconHolder, styles.firstChild]}>
+						<Text style={styles.clear}>Sort</Text>
+					</Pressable>
+					<Pressable
+						onPress={() => {
+							filterRef.current.open()
+						}}
+						style={styles.iconHolder}>
+						<Text style={styles.clear}>Filter</Text>
+					</Pressable>
 				</View>
 				<View style={styles.content}>
 					{state.items.map((item, key) => (
@@ -62,6 +77,48 @@ const Search = (props) => {
 						</View>
 					))}
 				</View>
+				<RBSheet
+					ref={sortRef}
+					closeOnDragDown={true}
+					closeOnPressMask={false}
+					animationType="fade"
+					closeOnPressMask={true}
+					closeOnPressBack={true}
+					height={350}
+					customStyles={{
+						wrapper: {
+							backgroundColor: "rgba(0,0,0,0.5)"
+						},
+						draggableIcon: {
+							backgroundColor: "#000"
+						},
+						container: {
+							backgroundColor: Defaults.bg
+						}
+					}}>
+					<Sort />
+				</RBSheet>
+				<RBSheet
+					ref={filterRef}
+					closeOnDragDown={true}
+					closeOnPressMask={false}
+					animationType="fade"
+					closeOnPressMask={true}
+					closeOnPressBack={true}
+					height={350}
+					customStyles={{
+						wrapper: {
+							backgroundColor: "rgba(0,0,0,0.5)"
+						},
+						draggableIcon: {
+							backgroundColor: "#000"
+						},
+						container: {
+							backgroundColor: Defaults.bg
+						}
+					}}>
+					<Filter />
+				</RBSheet>
 			</ScrollView>
 		</SafeAreaView>
 	)
@@ -80,6 +137,9 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		paddingBottom: 10
 	},
+	firstChild: {
+		marginRight: 10
+	},
 	holder: {
 		marginTop: 20
 	},
@@ -90,10 +150,12 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
-		marginHorizontal: 10
+		flexGrow: 1
 	},
 	row: {
-		flexDirection: "row"
+		flexDirection: "row",
+		width: "100%",
+		justifyContent: "space-between"
 	},
 	title: {
 		flexDirection: "row",

@@ -2,7 +2,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const reducer = (state = {}, action = {}) => {
 	let ret = {}
-
 	switch (action.type) {
 		case "login":
 			ret = { ...state, login: action.payload }

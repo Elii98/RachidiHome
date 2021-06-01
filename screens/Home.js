@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import Header from "../components/Header"
 import { SafeAreaView } from "react-native-safe-area-context"
 import BannerImgs from "../components/BannerImgs"
-import { StyleSheet, Text, View, ScrollView } from "react-native"
+import { StyleSheet, Text, View, ScrollView, RefreshControl } from "react-native"
 import Item from "../components/Item"
 import Category from "../components/Category"
-import Footer from "../components/Footer"
 import { StatusBar } from "expo-status-bar"
 import { server } from "../settings"
 import axios from "axios"
-import Counter from "../components/Counter"
 
 const Home = (props) => {
 	const { navigation } = props
@@ -21,26 +19,33 @@ const Home = (props) => {
 	})
 
 	useEffect(() => {
-		const getHome = async () => {
-			const banners = await axios.get(`${server}/getBanners.php`)
-			const categories = await axios.get(`${server}/getCategories.php`)
-			const items = await axios.get(`${server}/getItems.php`)
-
-			setState((state) => ({
-				...state,
-				banners: banners.data.banners,
-				categories: categories.data.category,
-				firstItems: items.data.firstItems,
-				secondItems: items.data.secondItems
-			}))
-		}
 		getHome()
-	}, [])
+	}, [getHome])
+	const getHome = async () => {
+		const banners = await axios.post(`${server}/getBanners.php`)
+		const categories = await axios.get(`${server}/getCategories.php`)
+		const items = await axios.get(`${server}/getItems.php`)
+
+		setState((state) => ({
+			...state,
+			banners: banners.data.banners,
+			categories: categories.data.category,
+			firstItems: items.data.firstItems,
+			secondItems: items.data.secondItems
+		}))
+	}
+	const [refreshing, setRefreshing] = useState(false)
+
+	const onRefresh = () => {
+		setRefreshing(true)
+		getHome().then(() => setRefreshing(false))
+	}
 
 	return (
 		<SafeAreaView>
 			<Header />
-			<ScrollView>
+			<ScrollView
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 				<StatusBar style="auto" />
 				<BannerImgs image={state.banners[0]?.image} xId={state.banners[0]?.itemid} />
 				<View style={styles.container}>

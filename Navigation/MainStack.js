@@ -25,7 +25,7 @@ import Ionicons from "react-native-vector-icons/Ionicons"
 import redStore from "../redux/store"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { bookmark, initialize, login } from "../redux/actions"
-
+ 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
