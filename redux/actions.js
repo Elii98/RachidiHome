@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import redStore from "./store"
 
 export const login = (data) => {
@@ -17,6 +16,13 @@ export const count = (data) => {
 export const initialize = (data) => {
 	return {
 		type: "initialize",
+		payload: data
+	}
+}
+
+export const searchFilter = (data) => {
+	return {
+		type: "searchFilter",
 		payload: data
 	}
 }

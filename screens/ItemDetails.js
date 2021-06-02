@@ -8,9 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import axios from "axios"
 import { server } from "../settings"
 import redStore from "../redux/store"
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import Ionicons from "react-native-vector-icons/Ionicons"
-import Ripple from "react-native-material-ripple"
 import { bookmark, addCartItem } from "../redux/actions"
 
 const ItemDetails = (props) => {
@@ -63,10 +61,8 @@ const ItemDetails = (props) => {
 	const addToCart = () => {
 		let itemArr = {}
 		itemArr[itemId] = redStore.getState().count
-		console.log(`itemArr`, itemArr)
 		redStore.dispatch(addCartItem(itemArr))
 	}
-
 	return (
 		<SafeAreaView contentContainerStyle={styles.container}>
 			<ScrollView>

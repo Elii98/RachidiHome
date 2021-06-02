@@ -18,6 +18,9 @@ const reducer = (state = {}, action = {}) => {
 		case "addCartItem":
 			ret = { ...state, cartItems: action.payload }
 			break
+		case "searchFilter":
+			ret = { ...state, searchFilter: action.payload }
+			break
 	}
 
 	if (!action.type.includes("@@redux")) {

@@ -13,23 +13,34 @@ const Cart = (props) => {
 	const { route, navigation } = props
 	const [state, setState] = useState({
 		cartItems: [],
-		msg: false
+		cartArrIds: redStore.getState().CartItems
 	})
 
 	useEffect(() => {
-		if (redStore.getState().cartItems) {
-			const getCartItems = async () => {
-				const ids = redStore.getState().cartItems
-				const r = await axios.post(`${server}/getCartItems.php`, { test: "123" })
-				console.log(`ids`, ids)
-				setState((state) => ({
+		const unsub = redStore.subscribe(() => {
+			if (state.cartArrIds !== redStore.getState().CartItems) {
+				setState({
 					...state,
-					cartItems: r.data
-				}))
+					cartArrIds: redStore.getState().CartItems
+				})
 			}
-			getCartItems()
-		}
+		})
+
+		return () => unsub()
 	}, [])
+
+	useEffect(() => {
+		const getCartItems = async () => {
+			const ids = redStore.getState().cartItems
+			const r = await axios.post(`${server}/getCartItems.php`, { ids })
+			console.log(`r`, r.data)
+			setState((state) => ({
+				...state,
+				cartItems: r.data
+			}))
+		}
+		getCartItems()
+	}, [state.cartArrIds])
 	return (
 		<View>
 			<Header />
@@ -40,18 +51,18 @@ const Cart = (props) => {
 						<Text style={styles.clear}>Clear items</Text>
 					</View>
 					<View>
-						{state.msg ? (
+						{state.cartArrIds ? (
 							<CartItem text="Test" image="img2.png" itemid="1" />
 						) : (
 							<Text>There are no items in the cart yet</Text>
 						)}
 					</View>
 				</View>
-				<View style={styles.payment}>
-					{/* <View style={styles.couponHolder}>
+				{/* <View style={styles.payment}>
+					<View style={styles.couponHolder}>
 						<TextInput style={styles.input} placeholder="Enter your coupon code" />
 						<SmallButton style={styles.btn} />
-					</View> */}
+					</View>
 					<View style={styles.fees}>
 						<View style={styles.row}>
 							<Text style={styles.title}>Subtotal</Text>
@@ -72,7 +83,7 @@ const Cart = (props) => {
 						text="Proceed to checkout"
 						color={Defaults.secondary}
 					/>
-				</View>
+				</View> */}
 			</ScrollView>
 		</View>
 	)

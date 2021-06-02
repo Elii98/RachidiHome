@@ -5,6 +5,8 @@ import { Defaults } from "../Globals/defaults"
 import Category from "../components/Category"
 import axios from "axios"
 import { server } from "../settings"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { StatusBar } from "expo-status-bar"
 
 const Categories = (props) => {
 	const { navigation } = props
@@ -21,9 +23,10 @@ const Categories = (props) => {
 	}, [])
 
 	return (
-		<View>
+		<SafeAreaView>
 			<Header />
 			<ScrollView style={styles.container}>
+				<StatusBar style="auto" />
 				<View style={styles.strip}>
 					<Text style={Defaults.title}>Categories</Text>
 				</View>
@@ -41,7 +44,7 @@ const Categories = (props) => {
 					</View>
 				</View>
 			</ScrollView>
-		</View>
+		</SafeAreaView>
 	)
 }
 

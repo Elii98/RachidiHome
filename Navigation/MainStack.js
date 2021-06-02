@@ -24,8 +24,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import redStore from "../redux/store"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { bookmark, initialize, login } from "../redux/actions"
- 
+import { bookmark, initialize, login, searchFilter } from "../redux/actions"
+
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
@@ -123,6 +123,7 @@ const MainStack = () => {
 			if (res) {
 				const data = JSON.parse(res)
 				redStore.dispatch(initialize(data))
+				redStore.dispatch(searchFilter({ sort: "alphabetical", filter: [0, 40000000] }))
 			}
 		})
 		redStore.subscribe(() => {

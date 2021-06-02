@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from "react"
-import { Pressable } from "react-native"
 import { StyleSheet, View, Text } from "react-native"
-import Ionicons from "react-native-vector-icons/Ionicons"
 import { Defaults } from "../Globals/defaults"
 import RangeSlider from "rn-range-slider"
 import Thumb from "../components/Thumb"
@@ -10,8 +8,10 @@ import RailSelected from "../components/RailSelected"
 import Label from "../components/Label"
 import Notch from "../components/Notch"
 import MyButton from "../components/MyButton"
+import redStore from "../redux/store"
+import { searchFilter } from "../redux/actions"
 
-const Filter = () => {
+const Filter = React.forwardRef((props, ref) => {
 	const MIN = 0
 	const MAX = 40000000
 	const [low, setLow] = useState(MIN)
@@ -24,8 +24,13 @@ const Filter = () => {
 	const handleValueChange = useCallback((low, high) => {
 		setLow(low)
 		setHigh(high)
-		
 	}, [])
+
+	const onFilter = () => {
+		redStore.dispatch(searchFilter({ filter: [low, high] }))
+		ref.current.close()
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.topHolder}>
@@ -46,16 +51,22 @@ const Filter = () => {
 					onValueChanged={handleValueChange}
 				/>
 				<View style={styles.row}>
-					<Text style={styles.priceText}>From: {Number(low).toLocaleString()}</Text>
-					<Text style={styles.priceText}>To: {Number(high).toLocaleString()}</Text>
+					<Text style={styles.priceText}>From: {Number(low).toLocaleString()} LBP</Text>
+					<Text style={styles.priceText}>To: {Number(high).toLocaleString()}LBP</Text>
 				</View>
 			</View>
 			<View style={styles.btnHolder}>
-				<MyButton text="Filter" color={Defaults.secondary} />
+				<MyButton
+					onpress={() => {
+						onFilter()
+					}}
+					text="Filter"
+					color={Defaults.secondary}
+				/>
 			</View>
 		</View>
 	)
-}
+})
 
 const styles = StyleSheet.create({
 	item: {
