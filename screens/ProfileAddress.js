@@ -6,26 +6,28 @@ import Icon from "react-native-vector-icons/FontAwesome"
 import { Defaults } from "../Globals/defaults"
 import { server } from "../settings"
 import BackHeader from "../components/BackHeader"
+import redStore from "../redux/store"
 
 const ProfileAddress = (props) => {
 	const { route, navigation } = props
-
-	//TODO change later
-	const userid = 1
 	const [state, setState] = useState({
-		addresses: []
+		addresses: [],
+		active: 0
 	})
 	useEffect(() => {
 		const getAddresses = async () => {
-			const r = await axios.get(`${server}/getAddresses.php`, { params: { userid } })
+			const userId = redStore.getState().login.user[0].id
+			const r = await axios.get(`${server}/getAddresses.php`, { params: { userId } })
 			setState((state) => ({ ...state, addresses: r.data.addresses }))
 		}
 		getAddresses()
-	}, [])
+	}, [state.active])
 	const handleChangeMain = async (id) => {
+		const userId = redStore.getState().login.user[0].id
 		const r = await axios.get(`${server}/changeMainAddress.php`, {
-			params: { addressid: id, userid: userid }
+			params: { addressid: id, userid: userId }
 		})
+		setState({ ...state, active: id })
 	}
 	return (
 		<SafeAreaView style={styles.container}>
@@ -37,7 +39,7 @@ const ProfileAddress = (props) => {
 				{state.addresses.map((item, key) => (
 					<TouchableOpacity
 						onPress={() => {
-							navigation.navigate("AddAddress", { itemid: item.id })
+							navigation.navigate("AddAddress", { itemid: item.id, update: 1 })
 						}}
 						key={key}
 						itemid={item.id}

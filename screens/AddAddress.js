@@ -6,11 +6,12 @@ import Input from "../components/Input"
 import MyButton from "../components/MyButton"
 import axios from "axios"
 import { server } from "../settings"
+import redStore from "../redux/store"
 
 const AddAddress = (props) => {
 	const { navigation } = props
 	//TODO change later
-	const userid = 1
+	const userId = redStore.getState().login.user[0].id
 	const [state, setState] = useState({
 		nickname: [],
 		city: [],
@@ -18,6 +19,27 @@ const AddAddress = (props) => {
 		buildingname: [],
 		landmark: []
 	})
+
+	let pageTitle = "Add Address"
+	let buttonText = "Save"
+	let buttonFunc = {}
+
+	if (route.params?.update === 1) {
+		pageTitle = "Update your address"
+		buttonText = "Update"
+
+		useEffect(() => {
+			const getUser = async () => {
+				const addressId = route.params.itemid
+				const r = await axios.get(`${server}/getUser.php`, {
+					params: { addressId: addressId }
+				})
+				setState({ ...state, user: r.data.user[0] })
+			}
+			getUser()
+		}, [])
+	}
+
 	const handleAddAddress = async () => {
 		const r = await axios.get(`${server}/addAddress.php`, {
 			params: {
@@ -26,7 +48,7 @@ const AddAddress = (props) => {
 				streetname: state.streetname,
 				buildingname: state.buildingname,
 				landmark: state.landmark,
-				userid: userid
+				userid: userId
 			}
 		})
 		navigation.navigate("ProfileAddress")
@@ -37,7 +59,7 @@ const AddAddress = (props) => {
 				<Pressable onPress={() => navigation.goBack()}>
 					<Icon name="angle-left" size={30} color="#000" />
 				</Pressable>
-				<Text style={styles.text}>Your addresses</Text>
+				<Text style={styles.text}>{pageTitle}</Text>
 			</View>
 			<ScrollView>
 				<Input
@@ -66,7 +88,7 @@ const AddAddress = (props) => {
 				</View>
 			</ScrollView>
 			<View style={{ flex: 2 }}>
-				<MyButton onPress={handleAddAddress} color={Defaults.secondary} text="Save" />
+				<MyButton onPress={handleAddAddress} color={Defaults.secondary} text={buttonText} />
 			</View>
 		</View>
 	)

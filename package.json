@@ -39,7 +39,8 @@
     "rn-range-slider": "^2.0.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0"
+    "@babel/core": "^7.9.0",
+    "@expo/webpack-config": "^0.12.76"
   },
   "private": true
 }

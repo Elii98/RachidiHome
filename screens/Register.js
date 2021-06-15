@@ -9,7 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import axios from "axios"
 import { server } from "../settings"
 import BackHeader from "../components/BackHeader"
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import redStore from "../redux/store"
 
 const Register = (props) => {
 	const { route, navigation } = props
@@ -41,10 +41,8 @@ const Register = (props) => {
 
 		useEffect(() => {
 			const getUser = async () => {
-				const userData = await AsyncStorage.getItem("user")
-				const x = JSON.parse(userData)
-				const userId = x.user[0].id
-				const r = await axios.get(`${server}/getUser.php`, { params: { id: userId } })
+				const userData = redStore.getState().login.user[0].id
+				const r = await axios.get(`${server}/getUser.php`, { params: { id: userData } })
 				setState({ ...state, user: r.data.user[0] })
 			}
 			getUser()

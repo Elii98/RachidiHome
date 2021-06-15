@@ -17,6 +17,7 @@ import ReviewOrder from "../screens/ReviewOrder"
 import ItemDetails from "../screens/ItemDetails"
 import Cart from "../screens/Cart"
 import Search from "../screens/Search"
+import SearchPage from "../screens/SearchPage"
 import Checkout from "../screens/Checkout"
 import Menu from "../screens/Menu"
 import Tabs from "../components/Tabs"
@@ -145,6 +146,10 @@ const MainStack = () => {
 					<Stack.Screen name="ProfileAddress" component={ProfileAddress} />
 					<Stack.Screen name="Profile" component={Profile} />
 					<Stack.Screen name="Register" component={Register} />
+					<Stack.Screen name="Wallet" component={Wallet} />
+					<Stack.Screen name="AddAddress" component={AddAddress} />
+					<Stack.Screen name="ProfileOrders" component={ProfileOrders} />
+					<Stack.Screen name="SearchPage" component={SearchPage} />
 				</>
 			) : (
 				<>
@@ -153,11 +158,6 @@ const MainStack = () => {
 					<Stack.Screen name="ForgotPassword" component={ForgotPassword} />
 				</>
 			)}
-			{/* 
-			
-			<Stack.Screen name="AddAddress" component={AddAddress} />
-			<Stack.Screen name="ProfileOrders" component={ProfileOrders} />
-			<Stack.Screen name="Wallet" component={Wallet} /> */}
 		</Stack.Navigator>
 	)
 }

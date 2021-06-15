@@ -213,3 +213,37 @@ function check_jwt($jwt)
 
 	return $jwt1 === $jwt;
 }
+
+// checks if key exists in array and returns the value, or boolean
+function is_there($arr, $key, $is_bool = false)
+{
+	return !empty($arr[$key]) ? ($is_bool ? 1 : $arr[$key]) : ($is_bool ? 0 : '');
+}
+
+// escape string
+function escape_string($string)
+{
+	global $db;
+
+	return $db->real_escape_string($string);
+}
+
+// recursevly escape array and all children of array
+function escape_array($dirty_array)
+{
+	$clean_array = [];
+	foreach ($dirty_array as $k => $v) {
+		if (is_array($v)) {
+			$clean_array[$k] = escape_array($v);
+		} else {
+			$clean_array[$k] = escape_string($v);
+		}
+	}
+	return $clean_array;
+}
+
+// decodes a json request
+function get_json($name)
+{
+	return json_decode($_REQUEST[$name], true);
+}

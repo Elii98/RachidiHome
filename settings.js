@@ -1,1 +1,1 @@
-export const server = "http://192.168.0.109/work/newrachidihome/server"
+export const server = "http://localhost/work/newrachidihome/server"

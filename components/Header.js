@@ -3,13 +3,20 @@ import { StatusBar } from "expo-status-bar"
 import { StyleSheet, View } from "react-native"
 import Input from "./Input"
 import { Defaults } from "../Globals/defaults"
+import { useNavigation } from "@react-navigation/core"
 
 const Header = (props) => {
-	const { nav } = props
+	const navigation = useNavigation()
 	return (
 		<View style={styles.container}>
 			<StatusBar style="light" />
-			<Input style={styles.input} placeholder="Search" />
+			<Input
+				onClick={() => {
+					navigation.navigate("SearchPage")
+				}}
+				style={styles.input}
+				placeholder="Search"
+			/>
 		</View>
 	)
 }

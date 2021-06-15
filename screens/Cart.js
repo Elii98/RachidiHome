@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import Counter from "react-native-counters"
 import { Defaults } from "../Globals/defaults"
 import Mybutton from "../components/MyButton"
 import Header from "../components/Header"
@@ -8,20 +7,21 @@ import { View, Text, StyleSheet, ScrollView, TextInput } from "react-native"
 import axios from "axios"
 import { server } from "../settings"
 import redStore from "../redux/store"
+import { StatusBar } from "expo-status-bar"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 const Cart = (props) => {
 	const { route, navigation } = props
 	const [state, setState] = useState({
 		cartItems: [],
-		cartArrIds: redStore.getState().CartItems
+		cartArrIds: redStore.getState().cartItems
 	})
 
 	useEffect(() => {
 		const unsub = redStore.subscribe(() => {
-			if (state.cartArrIds !== redStore.getState().CartItems) {
+			if (state.cartArrIds !== redStore.getState().cartItems) {
 				setState({
-					...state,
-					cartArrIds: redStore.getState().CartItems
+					cartArrIds: redStore.getState().cartItems
 				})
 			}
 		})
@@ -33,26 +33,43 @@ const Cart = (props) => {
 		const getCartItems = async () => {
 			const ids = redStore.getState().cartItems
 			const r = await axios.post(`${server}/getCartItems.php`, { ids })
-			console.log(`r`, r.data)
 			setState((state) => ({
 				...state,
-				cartItems: r.data
+				cartItems: r.data.items
 			}))
 		}
 		getCartItems()
 	}, [state.cartArrIds])
+	console.log(`state.cartItems`, state.cartItems)
 	return (
-		<View>
+		<SafeAreaView>
 			<Header />
-			<ScrollView>
+			<ScrollView contentContainerStyle={styles.scroller}>
+				<StatusBar style="auto" />
 				<View style={styles.container}>
 					<View style={styles.strip}>
 						<Text style={Defaults.title}>Cart</Text>
 						<Text style={styles.clear}>Clear items</Text>
 					</View>
 					<View>
-						{state.cartArrIds ? (
-							<CartItem text="Test" image="img2.png" itemid="1" />
+						{state.cartArrIds !== undefined ? (
+							<>
+								{state.cartItems.map((item, key) => {
+									const counterKey = item.id
+									const cartCounter = state.cartArrIds[counterKey]
+									return (
+										<CartItem
+											key={key}
+											text={item.title}
+											image={item.image}
+											itemid={item.id}
+											counter={cartCounter}
+											newprice={item.newprice}
+											oldprice={item.oldprice}
+										/>
+									)
+								})}
+							</>
 						) : (
 							<Text>There are no items in the cart yet</Text>
 						)}
@@ -85,7 +102,7 @@ const Cart = (props) => {
 					/>
 				</View> */}
 			</ScrollView>
-		</View>
+		</SafeAreaView>
 	)
 }
 
@@ -94,6 +111,9 @@ const styles = StyleSheet.create({
 		paddingLeft: 30,
 		paddingRight: 30,
 		paddingTop: 30
+	},
+	scroller: {
+		paddingBottom: 120
 	},
 	strip: {
 		flexDirection: "row",

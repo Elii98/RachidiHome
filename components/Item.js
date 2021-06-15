@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/core"
 import React from "react"
-import { View, Text, Image, StyleSheet, TouchableWithoutFeedback } from "react-native"
+import { View, Text, Image, StyleSheet, Pressable } from "react-native"
 import { Defaults } from "../Globals/defaults"
 import { server } from "../settings"
 import Ionicons from "react-native-vector-icons/Ionicons"
@@ -24,7 +24,7 @@ const Item = (props) => {
 	}
 	const navigation = useNavigation()
 	return (
-		<TouchableWithoutFeedback
+		<Pressable
 			onPress={() => {
 				navigation.navigate("ItemDetails", { itemId: itemid })
 			}}>
@@ -39,7 +39,7 @@ const Item = (props) => {
 					<Text style={styles.price}>LBP {price}</Text>
 				</View>
 			</View>
-		</TouchableWithoutFeedback>
+		</Pressable>
 	)
 }
 

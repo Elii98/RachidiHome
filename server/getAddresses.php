@@ -1,7 +1,7 @@
 <?php
 include "connect.php";
 
-$userid = get_post('userid');
+$userid = get_post('userId');
 
 $q = "SELECT * FROM addresses WHERE userid = '$userid'";
 $addresses = sq_array($q);
