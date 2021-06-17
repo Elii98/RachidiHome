@@ -3,11 +3,12 @@ import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { Defaults } from "../Globals/defaults"
 
 const WhiteTextStrip = (props) => {
-	const { text, onPress } = props
+	const { text, date, onPress } = props
 	return (
 		<TouchableWithoutFeedback onPress={onPress}>
 			<View style={styles.item}>
 				<Text style={styles.text}>{text}</Text>
+				<Text style={styles.date}>{date}</Text>
 			</View>
 		</TouchableWithoutFeedback>
 	)
@@ -15,9 +16,6 @@ const WhiteTextStrip = (props) => {
 
 const styles = StyleSheet.create({
 	item: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
 		padding: 10,
 		backgroundColor: Defaults.white,
 		marginBottom: 10
@@ -25,6 +23,10 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 20,
 		textTransform: "capitalize"
+	},
+	date: {
+		fontSize: 12,
+		color: "#aaa"
 	}
 })
 

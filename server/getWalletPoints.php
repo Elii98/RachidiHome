@@ -8,6 +8,12 @@ if (!$check) die();
 
 $q = "SELECT walletpoints FROM users WHERE id = '$userid'";
 $points = sq_array($q);
-$ret = ['walletpoints' => $points];
+$points = !empty($points) ? $points[0]['walletpoints'] : 0;
 
-echo json_encode($ret);
+$q = "SELECT id, wallet_points, DATE_FORMAT(in_date, '%Y-%M-%D %h:%m %p') 'in_date' FROM user_wallet WHERE user_id = '$userid' ORDER BY id DESC";
+$history = sq_array($q);
+
+ret_json([
+	'points' => $points,
+	'history' => $history,
+]);

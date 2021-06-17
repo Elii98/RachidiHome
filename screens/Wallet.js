@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from "react"
 import { Text, View, StyleSheet, ScrollView } from "react-native"
 import { Defaults } from "../Globals/defaults"
-import Icon from "react-native-vector-icons/FontAwesome"
 import axios from "axios"
 import { server } from "../settings"
 import WhiteTextStrip from "../components/WhiteTextStrip"
 import BackHeader from "../components/BackHeader"
 import { SafeAreaView } from "react-native-safe-area-context"
+import redStore from "../redux/store"
 
 const Wallet = () => {
 	//TODO change later
 	const [state, setState] = useState({
-		walletpoints: []
+		points: 0,
+		history: []
 	})
 	useEffect(() => {
 		const getWalletPoints = async () => {
 			const userid = redStore.getState().login.user[0].id
 			const jwt = redStore.getState().login.jwt
+
 			const r = await axios.get(`${server}/getWalletPoints.php`, { params: { userid, jwt } })
-			setState((state) => ({ ...state, walletpoints: r.data.walletpoints[0].walletpoints }))
+			setState((state) => ({
+				...state,
+				points: r.data.points,
+				history: r.data.history
+			}))
 		}
 		getWalletPoints()
 	}, [])
@@ -28,15 +34,17 @@ const Wallet = () => {
 			<ScrollView contentContainerStyle={styles.scroll}>
 				<View style={styles.text}>
 					<Text style={styles.light}>Your Current Balance</Text>
-					<Text style={styles.balance}>LBP {state.walletpoints}</Text>
+					<Text style={styles.balance}>LBP {state.points}</Text>
 				</View>
 				<View style={styles.strip}>
 					<Text style={Defaults.title}>History</Text>
 				</View>
-				<View styles={styles.empty}>
-					<WhiteTextStrip text="added 100000000" />
-					<Text style={styles.emptyText}>No purchases yet</Text>
-				</View>
+				{!state.history.length && (
+					<Text style={Defaults.textEmpty}>No wallet point history</Text>
+				)}
+				{state.history.map((item, k) => (
+					<WhiteTextStrip key={k} text={item.wallet_points} date={item.in_date} />
+				))}
 			</ScrollView>
 		</SafeAreaView>
 	)
