@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { Text, View, ScrollView, StyleSheet, Pressable, TextInput } from "react-native"
+import React, { useEffect, useState } from "react"
+import { Text, View, ScrollView, StyleSheet, Pressable } from "react-native"
 import Icon from "react-native-vector-icons/FontAwesome"
 import { Defaults } from "../Globals/defaults"
 import Input from "../components/Input"
@@ -7,52 +7,58 @@ import MyButton from "../components/MyButton"
 import axios from "axios"
 import { server } from "../settings"
 import redStore from "../redux/store"
+import { setAddresses } from "../redux/actions"
 
 const AddAddress = (props) => {
-	const { navigation } = props
+	const { navigation, route } = props
+
 	//TODO change later
 	const userId = redStore.getState().login.user[0].id
 	const [state, setState] = useState({
-		nickname: [],
-		city: [],
-		streetname: [],
-		buildingname: [],
-		landmark: []
+		nickname: "",
+		city: "",
+		streetname: "",
+		buildingname: "",
+		landmark: "",
+		details: ""
 	})
+
+	const addressId = route.params?.itemid
 
 	let pageTitle = "Add Address"
 	let buttonText = "Save"
-	let buttonFunc = {}
 
-	if (route.params?.update === 1) {
-		pageTitle = "Update your address"
-		buttonText = "Update"
+	useEffect(() => {
+		if (route.params?.update === 1) {
+			pageTitle = "Update your address"
+			buttonText = "Update"
 
-		useEffect(() => {
-			const getUser = async () => {
-				const addressId = route.params.itemid
-				const r = await axios.get(`${server}/getUser.php`, {
-					params: { addressId: addressId }
-				})
-				setState({ ...state, user: r.data.user[0] })
-			}
-			getUser()
-		}, [])
-	}
+			setState((state) => ({ ...state, ...redStore.getState().addresses[addressId] }))
+		}
+	}, [])
 
 	const handleAddAddress = async () => {
-		const r = await axios.get(`${server}/addAddress.php`, {
+		const addresses = redStore.getState().addresses
+
+		addresses[addressId] = state
+		redStore.dispatch(setAddresses(addresses))
+
+		axios.get(`${server}/addAddress.php`, {
 			params: {
+				address_id: addressId,
 				nickname: state.nickname,
 				city: state.city,
 				streetname: state.streetname,
 				buildingname: state.buildingname,
 				landmark: state.landmark,
-				userid: userId
+				userid: userId,
+				jwt: redStore.getState().login.jwt
 			}
 		})
+
 		navigation.navigate("ProfileAddress")
 	}
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.back}>
@@ -62,34 +68,56 @@ const AddAddress = (props) => {
 				<Text style={styles.text}>{pageTitle}</Text>
 			</View>
 			<ScrollView>
-				<Input
-					onChangeText={(v) => setState({ ...state, nickname: v })}
-					placeholder="Address Nickname"
-				/>
-				<Input onChangeText={(v) => setState({ ...state, city: v })} placeholder="City" />
-				<Input
-					onChangeText={(v) => setState({ ...state, streetname: v })}
-					placeholder="Street Name"
-				/>
-				<Input
-					onChangeText={(v) => setState({ ...state, buildingname: v })}
-					placeholder="Building Name"
-				/>
-				<Input
-					onChangeText={(v) => setState({ ...state, landmark: v })}
-					placeholder="Landmark"
-				/>
-				<View style={styles.location}>
-					<TextInput
-						placeholderTextColor={Defaults.black}
-						placeholder="Location on map"
-						style={styles.input}
+				<View style={styles.input}>
+					<Input
+						onChangeText={(v) => setState({ ...state, nickname: v })}
+						label="Address Nickname"
+						placeholder="Address Nickname"
+						defaultValue={state.nickname}
 					/>
 				</View>
-			</ScrollView>
-			<View style={{ flex: 2 }}>
+				<View style={styles.input}>
+					<Input
+						onChangeText={(v) => setState({ ...state, city: v })}
+						label="City"
+						placeholder="City"
+						defaultValue={state.city}
+					/>
+				</View>
+				<View style={styles.input}>
+					<Input
+						onChangeText={(v) => setState({ ...state, streetname: v })}
+						label="Street Name"
+						placeholder="Street Name"
+						defaultValue={state.streetname}
+					/>
+				</View>
+				<View style={styles.input}>
+					<Input
+						onChangeText={(v) => setState({ ...state, buildingname: v })}
+						label="Building Name"
+						placeholder="Building Name"
+						defaultValue={state.buildingname}
+					/>
+				</View>
+				<View style={styles.input}>
+					<Input
+						onChangeText={(v) => setState({ ...state, landmark: v })}
+						label="Landmark"
+						placeholder="Landmark"
+						defaultValue={state.landmark}
+					/>
+				</View>
+				<View style={styles.input}>
+					<Input
+						onChangeText={(v) => setState({ ...state, details: v })}
+						label="Address details"
+						placeholder="Address details"
+						defaultValue={state.details}
+					/>
+				</View>
 				<MyButton onPress={handleAddAddress} color={Defaults.secondary} text={buttonText} />
-			</View>
+			</ScrollView>
 		</View>
 	)
 }
@@ -117,12 +145,7 @@ const styles = StyleSheet.create({
 		alignItems: "center"
 	},
 	input: {
-		backgroundColor: Defaults.white,
-		width: "100%",
-		flexShrink: 1,
-		borderRadius: 5,
-		margin: 5,
-		padding: 15
+		marginBottom: 10
 	}
 })
 

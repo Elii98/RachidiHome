@@ -90,8 +90,8 @@ const HomeTabs = () => {
 
 const CatStackScreens = () => (
 	<CatStack.Navigator screenOptions={{ headerShown: false }}>
-		<CatStack.Screen name="Categories" component={Categories} />
 		<CatStack.Screen name="Search" component={Search} />
+		<CatStack.Screen name="Categories" component={Categories} />
 	</CatStack.Navigator>
 )
 
@@ -124,7 +124,6 @@ const MainStack = () => {
 			if (res) {
 				const data = JSON.parse(res)
 				redStore.dispatch(initialize(data))
-				redStore.dispatch(searchFilter({ sort: "alphabetical", filter: [0, 40000000] }))
 			}
 		})
 		redStore.subscribe(() => {
@@ -150,6 +149,7 @@ const MainStack = () => {
 					<Stack.Screen name="AddAddress" component={AddAddress} />
 					<Stack.Screen name="ProfileOrders" component={ProfileOrders} />
 					<Stack.Screen name="SearchPage" component={SearchPage} />
+					<Stack.Screen name="Search" component={Search} />
 				</>
 			) : (
 				<>

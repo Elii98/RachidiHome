@@ -10,13 +10,14 @@ import { SafeAreaView } from "react-native-safe-area-context"
 
 const Wallet = () => {
 	//TODO change later
-	const userid = 1
 	const [state, setState] = useState({
 		walletpoints: []
 	})
 	useEffect(() => {
 		const getWalletPoints = async () => {
-			const r = await axios.get(`${server}/getWalletPoints.php`, { params: { userid } })
+			const userid = redStore.getState().login.user[0].id
+			const jwt = redStore.getState().login.jwt
+			const r = await axios.get(`${server}/getWalletPoints.php`, { params: { userid, jwt } })
 			setState((state) => ({ ...state, walletpoints: r.data.walletpoints[0].walletpoints }))
 		}
 		getWalletPoints()

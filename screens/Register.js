@@ -32,7 +32,6 @@ const Register = (props) => {
 	let pageTitle = "Create an account ..."
 	let buttonText = "Register"
 	let showConfirm = true
-	let buttonFunc = {}
 
 	if (route.params?.update === 1) {
 		pageTitle = "Account Info ..."
@@ -64,8 +63,10 @@ const Register = (props) => {
 		<SafeAreaView style={styles.container}>
 			<BackHeader text={pageTitle} />
 			<ScrollView style={{ flex: 1 }}>
-				<View style={{ justifyContent: "flex-start" }}>
+				<View>
 					<Input
+						style={styles.input}
+						label="First Name"
 						onChangeText={(value) => {
 							setState({ ...state, user: { first_name: value } })
 						}}
@@ -73,6 +74,8 @@ const Register = (props) => {
 						value={state.user.first_name}
 					/>
 					<Input
+						style={styles.input}
+						label="Last Name"
 						placeholder="Last Name"
 						onChangeText={(value) => {
 							setState({ ...state, user: { last_name: value } })
@@ -80,44 +83,49 @@ const Register = (props) => {
 						value={state.user.last_name}
 					/>
 					<Input
+						style={styles.input}
+						label="Phone Number"
 						placeholder="Phone Number"
 						onChangeText={(value) => {
 							setState({ ...state, user: { phone_number: value } })
 						}}
 						value={state.user.phone_number}
 					/>
-				</View>
-				<View style={{ marginTop: 30, marginBottom: 50 }}>
-					<Input
-						placeholder="Password"
-						onChangeText={(value) => {
-							setState({ ...state, user: { password: value } })
-						}}
-					/>
-					<Input
-						placeholder="Confirm password"
-						onChangeText={(value) => {
-							setState({ ...state, confirmPassword: value })
-						}}
-					/>
-					{showConfirm && (
-						<View
-							style={{
-								flexDirection: "row",
-								alignSelf: "flex-start",
-								marginTop: 10,
-								marginBottom: 30
-							}}>
-							<Checkbox checked={false} />
-							<Text style={{ marginLeft: 15 }}>
-								By clicking i agree, you confirm that you have read our terms and
-								services
-							</Text>
-						</View>
+					{!redStore.getState().login?.user[0].id && (
+						<>
+							<Input
+								style={styles.input}
+								placeholder="Password"
+								onChangeText={(value) => {
+									setState({ ...state, user: { password: value } })
+								}}
+							/>
+							<Input
+								style={styles.input}
+								placeholder="Confirm password"
+								onChangeText={(value) => {
+									setState({ ...state, confirmPassword: value })
+								}}
+							/>
+							{showConfirm && (
+								<View
+									style={{
+										flexDirection: "row",
+										alignSelf: "flex-start",
+										marginTop: 10,
+										marginBottom: 30
+									}}>
+									<Checkbox checked={false} />
+									<Text style={{ marginLeft: 15 }}>
+										By clicking i agree, you confirm that you have read our
+										terms and services
+									</Text>
+								</View>
+							)}
+						</>
 					)}
-
 					<MyButton
-						onpress={handleRegister}
+						onPress={handleRegister}
 						text={buttonText}
 						color={Defaults.secondary}
 					/>
@@ -131,6 +139,9 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 30
+	},
+	input: {
+		marginBottom: 10
 	}
 })
 

@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { Defaults } from "../Globals/defaults"
 
 const WhiteTextStrip = (props) => {
-	const { text, onpress } = props
+	const { text, onPress } = props
 	return (
-		<TouchableWithoutFeedback onPress={onpress}>
+		<TouchableWithoutFeedback onPress={onPress}>
 			<View style={styles.item}>
 				<Text style={styles.text}>{text}</Text>
 			</View>

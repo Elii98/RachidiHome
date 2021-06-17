@@ -1,17 +1,14 @@
 <?php
 include "connect.php";
 
-
 $userid = get_post('userid');
-$q = "SELECT * FROM orders WHERE userid = '$userid'";
-$orders = sq_array($q);
-$idarray = array();
-foreach ($orders as $key => $value) {
+$jwt = get_post('jwt');
+$check = check_jwt($userid, $jwt);
+if (!$check) die();
 
-	array_push($idarray, $orders[$key]["itemid"]);
-}
-$ids = implode(', ', $idarray);
-$q = "SELECT * FROM items WHERE id IN ($ids)";
+$q = "SELECT i.*
+FROM items i, orders o
+WHERE i.id = o.itemid AND o.userid = $userid";
 $items = sq_array($q);
 
-echo json_encode($ret = ['items' => $items]);
+ret_json(['items' => $items]);

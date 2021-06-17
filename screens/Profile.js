@@ -16,25 +16,25 @@ const Profile = (props) => {
 				<StatusBar style="auto" />
 				<View>
 					<WhiteTextStrip
-						onpress={() => {
+						onPress={() => {
 							navigation.navigate("Register", { update: 1 })
 						}}
 						text="Account info"
 					/>
 					<WhiteTextStrip
-						onpress={() => {
+						onPress={() => {
 							navigation.navigate("ProfileAddress", { userid: 1 })
 						}}
 						text="Addresses book"
 					/>
 					<WhiteTextStrip
-						onpress={() => {
+						onPress={() => {
 							navigation.navigate("ProfileOrders")
 						}}
 						text="My orders"
 					/>
 					<WhiteTextStrip
-						onpress={() => {
+						onPress={() => {
 							navigation.navigate("Wallet")
 						}}
 						text="Wallet"

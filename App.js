@@ -2,13 +2,15 @@ import * as React from "react"
 import { StyleSheet } from "react-native"
 import { NavigationContainer } from "@react-navigation/native"
 import MainStack from "./Navigation/MainStack"
-import redStore from "./redux/store"
+import { Provider as PaperProvider } from "react-native-paper"
 
 export default function App() {
 	return (
-		<NavigationContainer>
-			<MainStack />
-		</NavigationContainer>
+		<PaperProvider>
+			<NavigationContainer>
+				<MainStack />
+			</NavigationContainer>
+		</PaperProvider>
 	)
 }
 

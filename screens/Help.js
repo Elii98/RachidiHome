@@ -17,7 +17,7 @@ const Help = (props) => {
 				<WhiteTextStrip text="Chat using whatsapp" />
 				<WhiteTextStrip text="Send us  an email" />
 				<WhiteTextStrip
-					onpress={() => {
+					onPress={() => {
 						navigation.navigate("FAQ")
 					}}
 					text="FAQ"

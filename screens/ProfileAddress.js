@@ -7,36 +7,66 @@ import { Defaults } from "../Globals/defaults"
 import { server } from "../settings"
 import BackHeader from "../components/BackHeader"
 import redStore from "../redux/store"
+import { setAddresses } from "../redux/actions"
 
 const ProfileAddress = (props) => {
-	const { route, navigation } = props
+	const { navigation } = props
+
 	const [state, setState] = useState({
 		addresses: [],
 		active: 0
 	})
+
 	useEffect(() => {
+		const unsub = redStore.subscribe(() => {
+			const addresses = redStore.getState().addresses
+			if (state.addresses !== addresses) {
+				setState((state) => ({
+					...state,
+					addresses
+				}))
+			}
+		})
+
 		const getAddresses = async () => {
 			const userId = redStore.getState().login.user[0].id
-			const r = await axios.get(`${server}/getAddresses.php`, { params: { userId } })
-			setState((state) => ({ ...state, addresses: r.data.addresses }))
+			const jwt = redStore.getState().login.jwt
+			const r = await axios.get(`${server}/getAddresses.php`, { params: { userId, jwt } })
+
+			redStore.dispatch(setAddresses(r.data.addresses))
 		}
+
 		getAddresses()
-	}, [state.active])
+		return () => unsub()
+	}, [])
+
 	const handleChangeMain = async (id) => {
 		const userId = redStore.getState().login.user[0].id
-		const r = await axios.get(`${server}/changeMainAddress.php`, {
-			params: { addressid: id, userid: userId }
+		const jwt = redStore.getState().login.jwt
+		const addresses = redStore.getState().addresses
+
+		for (let k in addresses) {
+			addresses[k].ismain = "0"
+		}
+
+		addresses[id].ismain = "1"
+
+		redStore.dispatch(setAddresses(addresses))
+
+		axios.get(`${server}/changeMainAddress.php`, {
+			params: { addressid: id, userid: userId, jwt }
 		})
-		setState({ ...state, active: id })
 	}
+
 	return (
 		<SafeAreaView style={styles.container}>
-			<BackHeader text=" Your addresses" />
-			{/* <View style={styles.centerText}>
-				<Text style={styles.empty}>No address added yet click on the plus</Text>
-			</View> */}
+			<BackHeader text="Your addresses" />
+
 			<ScrollView>
-				{state.addresses.map((item, key) => (
+				{!state.addresses && (
+					<Text style={Defaults.textEmpty}>You have no addresses added</Text>
+				)}
+				{Object.values(state.addresses).map((item, key) => (
 					<TouchableOpacity
 						onPress={() => {
 							navigation.navigate("AddAddress", { itemid: item.id, update: 1 })
@@ -62,14 +92,15 @@ const ProfileAddress = (props) => {
 					</TouchableOpacity>
 				))}
 			</ScrollView>
-			<TouchableOpacity
-				onPress={() => {
-					navigation.navigate("AddAddress")
-				}}>
-				<View style={styles.btn}>
+
+			<View style={styles.btn}>
+				<TouchableOpacity
+					onPress={() => {
+						navigation.navigate("AddAddress")
+					}}>
 					<Icon name="plus" size={30} color={Defaults.white} />
-				</View>
-			</TouchableOpacity>
+				</TouchableOpacity>
+			</View>
 		</SafeAreaView>
 	)
 }

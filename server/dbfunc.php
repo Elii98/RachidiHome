@@ -18,15 +18,25 @@ function sq_array($q, $x = [])
 	global $db;
 	$y = [
 		'k' => '',
+		'array' => true,
+		'col' => ''
 	];
 	$y = array_replace($y, $x);
 	$res = sq($q);
 	$arr = [];
-	while ($row = mysqli_fetch_assoc($res)) {
-		if (!empty($y['k'])) {
-			$arr[$row[$y['k']]] = $row;
-		} else {
-			$arr[] = $row;
+	if ($y['array']) {
+		while ($row = mysqli_fetch_assoc($res)) {
+			$row = empty($y['col']) ? $row : $row[$y['col']];
+			if (!empty($y['k'])) {
+				$arr[$row[$y['k']]] = $row;
+			} else {
+				$arr[] = $row;
+			}
+		}
+	} else {
+		while ($row = mysqli_fetch_assoc($res)) {
+			$row = empty($y['col']) ? $row : $row[$y['col']];
+			$arr = $row;
 		}
 	}
 	return $arr;
@@ -48,6 +58,21 @@ function sq_multi($qArr)
 	}
 }
 
+// inserts dates $from $to and returns array of dates from $from to $to 
+function date_array($from, $to)
+{
+	$period = new DatePeriod(
+		new DateTime($from),
+		new DateInterval('P1D'),
+		new DateTime($to)
+	);
+	$array = [];
+	foreach ($period as $k => $v) {
+		$array[] = $v->format('Y-m-d');
+	}
+	return $array;
+}
+
 // checks if request is array and returns the value with escaped string
 function get_post_arr($xname, $type = '')
 {
@@ -63,7 +88,7 @@ function get_post_arr($xname, $type = '')
 	}
 	switch ($type) {
 		case 'int': {
-				intval($ret);
+				$ret = intval($ret);
 				break;
 			}
 	}
@@ -107,9 +132,11 @@ function check_session($option = 'id')
 }
 
 // uploaded file to server and returns an array of information
-function upload_file($files, $x = [])
+function upload_file($inputName, $x = [])
 {
-	if (empty($files['name'])) {
+	if (empty($_FILES[$inputName])) return '';
+	$files = $_FILES[$inputName];
+	if (empty($files['name']) or empty($files['name'][0])) {
 		return false;
 	}
 
@@ -176,6 +203,7 @@ function upload_file($files, $x = [])
 	return $ret;
 }
 
+// error reporting and backtrack for mysql queries
 function report_error()
 {
 	global $db;
@@ -185,6 +213,7 @@ function report_error()
 	var_dump($backtrace);
 }
 
+// generate jwt token out of an array using global signature and sha256 encoding
 function generate_jwt($payload = [])
 {
 	global $jwt_secret;
@@ -200,6 +229,7 @@ function generate_jwt($payload = [])
 	return $jwt;
 }
 
+// checks if jwt is valid
 function check_jwt($jwt)
 {
 	global $jwt_secret;
@@ -212,6 +242,47 @@ function check_jwt($jwt)
 	$jwt1 = $base64Header . "." . $base64Payload . "." . $base64Signature;
 
 	return $jwt1 === $jwt;
+}
+
+// check if userid is in jwt
+function check_login($userid, $jwt)
+{
+	$jwt1 = generate_jwt($userid);
+
+	return $jwt === $jwt1;
+}
+
+// generate from array k => columns and v => values for insert
+function insert_array($arr = [])
+{
+	$cols = [];
+	$vals = [];
+
+	foreach ($arr as $k => $v) {
+		$cols[] = "`$k`";
+		$vals[] = "'$v'";
+	}
+
+	$cols = implode(',', $cols);
+	$vals = implode(',', $vals);
+
+	return [
+		'columns' => $cols,
+		'values' => $vals
+	];
+}
+// generate from array k => columns and v => values for update
+function update_array($arr = [])
+{
+	$values = [];
+
+	foreach ($arr as $k => $v) {
+		$values[] = " `$k`= '$v' ";
+	}
+
+	$values = implode(',', $values);
+
+	return $values;
 }
 
 // checks if key exists in array and returns the value, or boolean
@@ -242,8 +313,14 @@ function escape_array($dirty_array)
 	return $clean_array;
 }
 
+function ret_json($array = [])
+{
+	echo json_encode($array);
+	die();
+}
+
 // decodes a json request
 function get_json($name)
 {
-	return json_decode($_REQUEST[$name], true);
+	return escape_array(json_decode($_REQUEST['name'], true));
 }

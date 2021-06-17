@@ -57,7 +57,7 @@ const Filter = React.forwardRef((props, ref) => {
 			</View>
 			<View style={styles.btnHolder}>
 				<MyButton
-					onpress={() => {
+					onPress={() => {
 						onFilter()
 					}}
 					text="Filter"

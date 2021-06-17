@@ -30,19 +30,19 @@ const Menu = (props) => {
 				</View>
 				<View>
 					<WhiteTextStrip
-						onpress={() => {
+						onPress={() => {
 							navigation.navigate("Wishlist")
 						}}
 						text="Wishlist"
 					/>
 					<WhiteTextStrip
-						onpress={() => {
+						onPress={() => {
 							logout()
 						}}
 						text="Signout"
 					/>
 					<WhiteTextStrip
-						onpress={() => {
+						onPress={() => {
 							navigation.navigate("Help")
 						}}
 						text="Help"

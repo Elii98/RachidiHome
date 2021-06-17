@@ -14,26 +14,20 @@ import { bookmark, addCartItem } from "../redux/actions"
 const ItemDetails = (props) => {
 	const { navigation, route } = props
 	const { itemId } = route.params
-	const [button, setButton] = useState(false)
-	const [cartCounter, setCartCounter] = useState(0)
 	const [state, setState] = useState({
 		item: [],
-		bookmarked: false
+		bookmarked: false,
+		counter: redStore.getState().cartItems[itemId]?.counter || 0,
+		button: redStore.getState().cartItems[itemId]?.counter ? true : false
 	})
 	useEffect(() => {
 		const getItem = async () => {
 			const r = await axios.get(`${server}/getItems.php`, { params: { itemid: itemId } })
 			setState((state) => ({ ...state, item: r.data.item[0] }))
 		}
+
 		getItem()
 
-		const unsub = redStore.subscribe(() => {
-			if (redStore.getState().count > 0) {
-				setButton(true)
-			} else {
-				setButton(false)
-			}
-		})
 		let bookmarkArr = redStore.getState().bookmark
 		if (bookmarkArr) {
 			if (bookmarkArr.includes(itemId)) {
@@ -42,12 +36,6 @@ const ItemDetails = (props) => {
 				setState({ ...state, bookmarked: false })
 			}
 		}
-
-		if (redStore.getState().cartItems) {
-			const data = redStore.getState().cartItems
-			setCartCounter(data[itemId])
-		}
-		return () => unsub()
 	}, [])
 
 	const addBookmark = () => {
@@ -59,10 +47,25 @@ const ItemDetails = (props) => {
 	}
 
 	const addToCart = () => {
-		let itemArr = {}
-		itemArr[itemId] = redStore.getState().count
-		redStore.dispatch(addCartItem(itemArr))
+		const item = {
+			text: state.item.title,
+			image: state.item.image,
+			itemid: state.item.id,
+			counter: state.counter,
+			newprice: state.item.newprice,
+			oldprice: state.item.oldprice
+		}
+		redStore.dispatch(addCartItem(item))
 	}
+
+	const changeCounter = (counter) => {
+		setState({
+			...state,
+			counter,
+			button: counter ? true : false
+		})
+	}
+
 	return (
 		<SafeAreaView contentContainerStyle={styles.container}>
 			<ScrollView>
@@ -131,13 +134,13 @@ const ItemDetails = (props) => {
 								LBP {Number(state.item.newprice).toLocaleString()}
 							</Text>
 							<View style={styles.counter}>
-								<Counter start={cartCounter} />
+								<Counter start={state.counter} onChange={changeCounter} />
 							</View>
 						</View>
-						{button ? (
+						{state.button ? (
 							<View style={styles.btnHolder}>
 								<Mybutton
-									onpress={() => {
+									onPress={() => {
 										addToCart()
 									}}
 									text="Add to cart"

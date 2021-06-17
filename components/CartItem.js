@@ -1,11 +1,27 @@
-import React from "react"
+import React, { useState } from "react"
 import { View, Text, Image, StyleSheet } from "react-native"
 import Counter from "./Counter"
 import { Defaults } from "../Globals/defaults"
 import { server } from "../settings"
+import redStore from "../redux/store"
+import { changeCartCount, removeCartItem } from "../redux/actions"
 
 const CartItem = (props) => {
 	const { image = "", text, itemid, counter, oldprice, newprice } = props
+
+	const [state, setState] = useState({
+		counter: counter
+	})
+
+	const changeCounter = (counter) => {
+		if (counter > 0) {
+			redStore.dispatch(changeCartCount(itemid, counter))
+			setState({ ...state, counter })
+		} else {
+			redStore.dispatch(removeCartItem(itemid))
+		}
+	}
+
 	return (
 		<View style={styles.container}>
 			<Image style={styles.img} source={{ uri: `${server}/imgs/${image}` }} />
@@ -15,7 +31,7 @@ const CartItem = (props) => {
 					<Text style={styles.price}>LBP {Number(newprice).toLocaleString()}</Text>
 				</View>
 				<View style={styles.counterContainer}>
-					<Counter start={counter} />
+					<Counter start={state.counter} onChange={changeCounter} />
 				</View>
 			</View>
 		</View>

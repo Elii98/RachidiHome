@@ -8,9 +8,9 @@ import Category from "../components/Category"
 import { StatusBar } from "expo-status-bar"
 import { server } from "../settings"
 import axios from "axios"
+import { Defaults } from "../Globals/defaults"
 
 const Home = (props) => {
-	const { navigation } = props
 	const [state, setState] = useState({
 		banners: [],
 		firstItems: [],
@@ -21,6 +21,7 @@ const Home = (props) => {
 	useEffect(() => {
 		getHome()
 	}, [getHome])
+
 	const getHome = async () => {
 		const banners = await axios.post(`${server}/getBanners.php`)
 		const categories = await axios.get(`${server}/getCategories.php`)
@@ -34,6 +35,7 @@ const Home = (props) => {
 			secondItems: items.data.secondItems
 		}))
 	}
+
 	const [refreshing, setRefreshing] = useState(false)
 
 	const onRefresh = () => {
@@ -51,6 +53,9 @@ const Home = (props) => {
 				<View style={styles.container}>
 					<Text style={styles.title}>Offers</Text>
 					<ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
+						{!state.firstItems.length && (
+							<Text style={Defaults.textEmpty}>There are no offers</Text>
+						)}
 						{state.firstItems.map((item, key) => (
 							<Item
 								key={key}
@@ -80,6 +85,9 @@ const Home = (props) => {
 				<View style={styles.container}>
 					<Text style={styles.title}>new arrivals</Text>
 					<ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
+						{!state.secondItems.length && (
+							<Text style={Defaults.textEmpty}>There are no new arrivals</Text>
+						)}
 						{state.secondItems.map((item, key) => (
 							<Item
 								key={key}

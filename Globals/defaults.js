@@ -10,6 +10,12 @@ const Defaults = {
 		fontSize: 20,
 		fontWeight: "bold",
 		textTransform: "uppercase"
+	},
+	textEmpty: {
+		fontSize: 18,
+		fontWeight: "bold",
+		color: "#aaa",
+		textAlign: "center"
 	}
 }
 

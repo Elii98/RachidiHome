@@ -14,6 +14,7 @@ const Wishlist = () => {
 	const [state, setState] = useState({
 		bookmarks: []
 	})
+
 	useEffect(() => {
 		const getBookmarks = async () => {
 			if (redStore.getState().bookmark) {
@@ -34,6 +35,7 @@ const Wishlist = () => {
 		})
 		return () => unsub()
 	}, [])
+
 	return (
 		<SafeAreaView>
 			<Header />
@@ -43,6 +45,9 @@ const Wishlist = () => {
 					<Icon name="share-alt" size={30} color="#000" />
 				</View>
 				<View>
+					{!state.bookmarks.length && (
+						<Text style={Defaults.textEmpty}>You have nothing in your wishlist</Text>
+					)}
 					{state.bookmarks.map((item, key) => (
 						<View key={key} style={styles.holder}>
 							<Item

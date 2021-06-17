@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native"
+import React, { useState } from "react"
+import { View, StyleSheet, Text } from "react-native"
 import Input from "../components/Input"
 import MyButton from "../components/MyButton"
 import { Defaults } from "../Globals/defaults"
@@ -9,7 +9,6 @@ import axios from "axios"
 import redStore from "../redux/store"
 import { login } from "../redux/actions"
 import { server } from "../settings"
-import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const Splash = (props) => {
 	const { navigation } = props
@@ -17,9 +16,10 @@ const Splash = (props) => {
 	const [password, setPassword] = useState()
 
 	const handleLogin = async () => {
+		// alert(1)
 		const r = await axios.get(`${server}/login.php`, { params: { phone, password } })
 		if (r.data.user === 0) {
-			console.log(`No user`)
+			alert(`No user`)
 		} else {
 			redStore.dispatch(login(r.data))
 		}
@@ -35,10 +35,10 @@ const Splash = (props) => {
 				<View style={styles.container}>
 					<Input placeholder="Phone" onChangeText={setPhone} />
 					<Input secure onChangeText={setPassword} placeholder="Password" />
-					<MyButton color={Defaults.primary} onpress={handleLogin} text="Sign In" />
+					<MyButton color={Defaults.primary} onPress={handleLogin} text="Sign In" />
 					<MyButton
 						color={Defaults.secondary}
-						onpress={() => navigation.navigate("Register")}
+						onPress={() => navigation.navigate("Register")}
 						text="Register"
 					/>
 				</View>

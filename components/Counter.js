@@ -1,46 +1,24 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { TouchableOpacity } from "react-native"
 import { View, Text, StyleSheet } from "react-native"
 import Ionicons from "react-native-vector-icons/Ionicons"
-import { count } from "../redux/actions"
-import redStore from "../redux/store"
 
 const Counter = (props) => {
-	const { start = 0 } = props
-	const [number, setNumber] = useState(start)
-	const decrease = async () => {
-		if (number !== 0) {
-			const num = number - 1
-			await setNumber(num)
-			redStore.dispatch(count(num))
-		}
+	const { start = 0, onChange } = props
+
+	const changeCount = (add) => {
+		let count = start + add
+		count = count < 1 ? 0 : count
+		onChange && onChange(count)
 	}
-	const increase = async () => {
-		const num = number + 1
-		await setNumber(num)
-		redStore.dispatch(count(num))
-	}
-	useEffect(() => {
-		if (start > 0) {
-			redStore.dispatch(count(start))
-		}
-		setNumber(start)
-	}, [start])
+
 	return (
 		<View style={styles.container}>
-			<TouchableOpacity
-				onPress={() => {
-					decrease()
-				}}
-				style={styles.btn}>
+			<TouchableOpacity onPress={() => changeCount(-1)} style={styles.btn}>
 				<Ionicons name="remove-outline" size={20} color="#616161" />
 			</TouchableOpacity>
-			<Text style={styles.number}>{number}</Text>
-			<TouchableOpacity
-				onPress={() => {
-					increase()
-				}}
-				style={styles.btn}>
+			<Text style={styles.number}>{start}</Text>
+			<TouchableOpacity onPress={() => changeCount(1)} style={styles.btn}>
 				<Ionicons name="add-outline" size={20} color="#616161" />
 			</TouchableOpacity>
 		</View>
@@ -50,7 +28,7 @@ const Counter = (props) => {
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: "row",
-		justifyContent: "space-between",
+		justifyContent: "flex-end",
 		alignItems: "center"
 	},
 	btn: {

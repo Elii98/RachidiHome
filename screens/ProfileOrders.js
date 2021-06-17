@@ -7,20 +7,26 @@ import axios from "axios"
 import { server } from "../settings"
 import BackHeader from "../components/BackHeader"
 import { SafeAreaView } from "react-native-safe-area-context"
+import redStore from "../redux/store"
 
 const ProfileOrders = () => {
 	//TODO change this later
-	const userid = 1
 	const [state, setState] = useState({
 		items: []
 	})
+
 	useEffect(() => {
+		const userid = redStore.getState().login.user[0].id
+		const jwt = redStore.getState().login.jwt
 		const getOrderHistory = async () => {
-			const items = await axios.get(`${server}/getOrderHistory.php`, { params: { userid } })
+			const items = await axios.get(`${server}/getOrderHistory.php`, {
+				params: { userid, jwt }
+			})
 			setState((state) => ({ ...state, items: items.data.items }))
 		}
 		getOrderHistory()
 	}, [])
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<BackHeader text="Your ORders" />

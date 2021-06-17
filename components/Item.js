@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/core"
 import React from "react"
 import { View, Text, Image, StyleSheet, Pressable } from "react-native"
+import { TouchableRipple } from "react-native-paper"
 import { Defaults } from "../Globals/defaults"
 import { server } from "../settings"
 import Ionicons from "react-native-vector-icons/Ionicons"
@@ -24,11 +25,14 @@ const Item = (props) => {
 	}
 	const navigation = useNavigation()
 	return (
-		<Pressable
+		<TouchableRipple
+			borderless={true}
+			style={{ marginRight: 10 }}
 			onPress={() => {
-				navigation.navigate("ItemDetails", { itemId: itemid })
-			}}>
-			<View style={[styles.container, { width: size !== "full" ? 250 : "100%" }]}>
+				// navigation.navigate("ItemDetails", { itemId: itemid })
+			}}
+			rippleColor="rgba(0,0,0,0.1)">
+			<View style={{ ...styles.holder, width: size !== "full" ? 250 : "100%" }}>
 				<Image style={styles.img} source={{ uri: `${server}/imgs/${image}` }} />
 				<Text style={[styles.tag, { display: size !== "full" ? "flex" : "none" }]}>
 					Sale
@@ -39,14 +43,13 @@ const Item = (props) => {
 					<Text style={styles.price}>LBP {price}</Text>
 				</View>
 			</View>
-		</Pressable>
+		</TouchableRipple>
 	)
 }
 
 const styles = StyleSheet.create({
-	container: {
-		marginRight: 10,
-		width: 250
+	holder: {
+		backgroundColor: Defaults.white
 	},
 	tag: {
 		position: "absolute",
@@ -75,7 +78,6 @@ const styles = StyleSheet.create({
 		fontWeight: "bold"
 	},
 	details: {
-		backgroundColor: Defaults.white,
 		padding: 15
 	},
 	delete: {
