@@ -12,7 +12,7 @@ import BackHeader from "../components/BackHeader"
 import redStore from "../redux/store"
 
 const Register = (props) => {
-	const { route, navigation } = props
+	const { route } = props
 
 	const [state, setState] = useState({
 		firstName: [],
@@ -91,7 +91,7 @@ const Register = (props) => {
 						}}
 						value={state.user.phone_number}
 					/>
-					{!redStore.getState().login?.user[0].id && (
+					{!redStore.getState().login?.user && (
 						<>
 							<Input
 								style={styles.input}

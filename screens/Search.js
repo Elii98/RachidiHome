@@ -26,10 +26,16 @@ const Search = (props) => {
 	useEffect(() => {
 		const unsub = redStore.subscribe(() => {
 			if (redStore.getState().searchFilter.sort !== state.sort) {
-				setState({ ...state, sort: redStore.getState().searchFilter.sort })
+				setState({
+					...state,
+					sort: redStore.getState().searchFilter.sort
+				})
 			}
 			if (redStore.getState().searchFilter.filter !== state.filter) {
-				setState({ ...state, filter: redStore.getState().searchFilter.filter })
+				setState({
+					...state,
+					filter: redStore.getState().searchFilter.filter
+				})
 			}
 		})
 
@@ -38,13 +44,20 @@ const Search = (props) => {
 	useEffect(() => {
 		const getItems = async () => {
 			const r = await axios.get(`${server}/getCatItems.php`, {
-				params: { id: route.params.catid, sort: state.sort, filter: state.filter }
+				params: {
+					id: route.params.catid,
+					sort: state.sort,
+					filter: state.filter
+				}
 			})
 			setState((state) => ({ ...state, items: r.data.items }))
 		}
 		getItems()
 	}, [state.sort, state.filter])
-	console.log(`redStore.getState().searchFilter`, redStore.getState().searchFilter)
+	console.log(
+		`redStore.getState().searchFilter`,
+		redStore.getState().searchFilter
+	)
 	console.log(`state.sort`, state.sort)
 	return (
 		<SafeAreaView>
@@ -52,7 +65,7 @@ const Search = (props) => {
 			<ScrollView contentContainerStyle={styles.container}>
 				<StatusBar style="auto" />
 				<View style={styles.strip}>
-					<BackHeader search={true} text={route.params.text} />
+					<BackHeader search={true} text={route.params?.text} />
 					<View style={styles.row}>
 						<Pressable
 							onPress={() => {
@@ -74,8 +87,8 @@ const Search = (props) => {
 				{state.items.length === 0 ? (
 					<View style={styles.msg}>
 						<Text style={styles.msgText}>
-							There are no results that meet your filters, have you tried changing
-							them?
+							There are no results that meet your filters, have
+							you tried changing them?
 						</Text>
 					</View>
 				) : (

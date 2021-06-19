@@ -29,12 +29,23 @@ const Item = (props) => {
 			borderless={true}
 			style={{ marginRight: 10 }}
 			onPress={() => {
-				// navigation.navigate("ItemDetails", { itemId: itemid })
+				navigation.navigate("ItemDetails", { itemId: itemid })
 			}}
 			rippleColor="rgba(0,0,0,0.1)">
-			<View style={{ ...styles.holder, width: size !== "full" ? 250 : "100%" }}>
-				<Image style={styles.img} source={{ uri: `${server}/imgs/${image}` }} />
-				<Text style={[styles.tag, { display: size !== "full" ? "flex" : "none" }]}>
+			<View
+				style={{
+					...styles.holder,
+					width: size !== "full" ? 250 : "100%"
+				}}>
+				<Image
+					style={styles.img}
+					source={{ uri: `${server}/imgs/${image}` }}
+				/>
+				<Text
+					style={[
+						styles.tag,
+						{ display: size !== "full" ? "flex" : "none" }
+					]}>
 					Sale
 				</Text>
 				{wishlist}

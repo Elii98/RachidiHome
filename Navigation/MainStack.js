@@ -64,7 +64,9 @@ const HomeTabs = () => {
 					}
 
 					// You can return any component that you like here!
-					return <Ionicons name={iconName} size={size} color={color} />
+					return (
+						<Ionicons name={iconName} size={size} color={color} />
+					)
 				}
 			})}
 			tabBarOptions={{
@@ -137,45 +139,43 @@ const MainStack = () => {
 	}, [])
 
 	return (
-		<Stack.Navigator screenOptions={{ headerShown: false, initialRouteName: "Splash" }}>
+		<Stack.Navigator
+			initialRouteName="Home"
+			screenOptions={{
+				headerShown: false
+			}}>
 			{isSignedIn ? (
 				<>
 					<Stack.Screen name="Home" component={HomeTabs} />
 					<Stack.Screen name="ItemDetails" component={ItemDetails} />
-					<Stack.Screen name="ProfileAddress" component={ProfileAddress} />
+					<Stack.Screen
+						name="ProfileAddress"
+						component={ProfileAddress}
+					/>
 					<Stack.Screen name="Profile" component={Profile} />
 					<Stack.Screen name="Register" component={Register} />
 					<Stack.Screen name="Wallet" component={Wallet} />
 					<Stack.Screen name="AddAddress" component={AddAddress} />
-					<Stack.Screen name="ProfileOrders" component={ProfileOrders} />
+					<Stack.Screen
+						name="ProfileOrders"
+						component={ProfileOrders}
+					/>
 					<Stack.Screen name="SearchPage" component={SearchPage} />
 					<Stack.Screen name="Search" component={Search} />
+					<Stack.Screen name="ReviewOrder" component={ReviewOrder} />
+					<Stack.Screen name="Checkout" component={Checkout} />
 				</>
 			) : (
 				<>
 					<Stack.Screen name="Splash" component={Splash} />
 					<Stack.Screen name="Register" component={Register} />
-					<Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+					<Stack.Screen
+						name="ForgotPassword"
+						component={ForgotPassword}
+					/>
 				</>
 			)}
 		</Stack.Navigator>
 	)
 }
 export default MainStack
-
-{
-	/* <Stack.Screen name="Footer" component={Footer} />
-			
-			<Stack.Screen name="Wishlist" component={Wishlist} />
-			<Stack.Screen name="Categories" component={Categories} />
-			
-			<Stack.Screen name="ProfileAddress" component={ProfileAddress} />
-			<Stack.Screen name="AddAddress" component={AddAddress} />
-			<Stack.Screen name="Help" component={Help} />
-			<Stack.Screen name="FAQ" component={FAQ} />
-			<Stack.Screen name="Wallet" component={Wallet} />
-			<Stack.Screen name="ProfileOrders" component={ProfileOrders} />
-			<Stack.Screen name="ItemDetails" component={ItemDetails} />
-			<Stack.Screen name="Cart" component={Cart} />
-			<Stack.Screen name="Search" component={Search} /> */
-}

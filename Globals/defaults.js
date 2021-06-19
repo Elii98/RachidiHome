@@ -11,12 +11,28 @@ const Defaults = {
 		fontWeight: "bold",
 		textTransform: "uppercase"
 	},
+	subTitle: {
+		fontSize: 15,
+		color: "#aaa"
+	},
 	textEmpty: {
 		fontSize: 18,
 		fontWeight: "bold",
 		color: "#aaa",
 		textAlign: "center"
+	},
+	pad: {
+		padding: 10
+	}
+}
+const Styles = {
+	texts: {
+		error: {
+			fontSize: 15,
+			color: "tomato",
+			fontWeight: "bold"
+		}
 	}
 }
 
-export { Defaults }
+export { Defaults, Styles }

@@ -9,6 +9,7 @@ import axios from "axios"
 import redStore from "../redux/store"
 import { login } from "../redux/actions"
 import { server } from "../settings"
+import * as Animatable from "react-native-animatable"
 
 const Splash = (props) => {
 	const { navigation } = props
@@ -16,8 +17,9 @@ const Splash = (props) => {
 	const [password, setPassword] = useState()
 
 	const handleLogin = async () => {
-		// alert(1)
-		const r = await axios.get(`${server}/login.php`, { params: { phone, password } })
+		const r = await axios.get(`${server}/login.php`, {
+			params: { phone, password }
+		})
 		if (r.data.user === 0) {
 			alert(`No user`)
 		} else {
@@ -27,31 +29,57 @@ const Splash = (props) => {
 
 	return (
 		<DismissKeyboard>
-			<View style={[styles.container, { backgroundColor: Defaults.bg }]}>
+			<Animatable.View
+				animation="fadeIn"
+				duration={300}
+				style={{ ...styles.container, backgroundColor: Defaults.bg }}>
 				<StatusBar />
-				<View style={[styles.container, styles.center]}>
+				<Animatable.View
+					animation="bounceIn"
+					style={{ ...styles.container, ...styles.center }}>
 					<Text style={styles.mainHeader}>Rachidi Home</Text>
-				</View>
-				<View style={styles.container}>
+				</Animatable.View>
+				<Animatable.View animation={fadeIn} style={styles.container}>
 					<Input placeholder="Phone" onChangeText={setPhone} />
-					<Input secure onChangeText={setPassword} placeholder="Password" />
-					<MyButton color={Defaults.primary} onPress={handleLogin} text="Sign In" />
+					<Input
+						secure
+						onChangeText={setPassword}
+						placeholder="Password"
+					/>
+					<MyButton
+						color={Defaults.primary}
+						onPress={handleLogin}
+						text="Sign In"
+					/>
 					<MyButton
 						color={Defaults.secondary}
 						onPress={() => navigation.navigate("Register")}
 						text="Register"
 					/>
-				</View>
-				<View style={[styles.container, styles.center]}>
+				</Animatable.View>
+				<Animatable.View
+					animation="fadeIn"
+					style={{ ...styles.container, ...styles.center }}>
 					<Text
 						style={{ padding: 15 }}
 						onPress={() => navigation.navigate("ForgotPassword")}>
 						Forgot password?
 					</Text>
-				</View>
-			</View>
+				</Animatable.View>
+			</Animatable.View>
 		</DismissKeyboard>
 	)
+}
+
+const fadeIn = {
+	from: {
+		opacity: 0,
+		transform: [{ translateY: 50 }]
+	},
+	to: {
+		opacity: 1,
+		transform: [{ translateY: 0 }]
+	}
 }
 
 const styles = StyleSheet.create({

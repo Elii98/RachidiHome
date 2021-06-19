@@ -1,8 +1,14 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState } from "react"
 import Header from "../components/Header"
 import { SafeAreaView } from "react-native-safe-area-context"
 import BannerImgs from "../components/BannerImgs"
-import { StyleSheet, Text, View, ScrollView, RefreshControl } from "react-native"
+import {
+	StyleSheet,
+	Text,
+	View,
+	ScrollView,
+	RefreshControl
+} from "react-native"
 import Item from "../components/Item"
 import Category from "../components/Category"
 import { StatusBar } from "expo-status-bar"
@@ -47,14 +53,29 @@ const Home = (props) => {
 		<SafeAreaView>
 			<Header />
 			<ScrollView
-				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+					/>
+				}>
 				<StatusBar style="auto" />
-				<BannerImgs image={state.banners[0]?.image} xId={state.banners[0]?.itemid} />
-				<View style={styles.container}>
-					<Text style={styles.title}>Offers</Text>
-					<ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
+				<BannerImgs
+					image={state.banners[0]?.image}
+					xId={state.banners[0]?.itemid}
+				/>
+				<View style={styles.pushTop}>
+					<Text style={{ ...styles.title, ...styles.container }}>
+						Offers
+					</Text>
+					<ScrollView
+						style={styles.container}
+						showsHorizontalScrollIndicator={false}
+						horizontal={true}>
 						{!state.firstItems.length && (
-							<Text style={Defaults.textEmpty}>There are no offers</Text>
+							<Text style={Defaults.textEmpty}>
+								There are no offers
+							</Text>
 						)}
 						{state.firstItems.map((item, key) => (
 							<Item
@@ -68,8 +89,12 @@ const Home = (props) => {
 						))}
 					</ScrollView>
 				</View>
-				<BannerImgs image={state.banners[1]?.image} xId={state.banners[1]?.itemid} />
-				<View style={styles.container}>
+				<BannerImgs
+					style={styles.pushTop}
+					image={state.banners[1]?.image}
+					xId={state.banners[1]?.itemid}
+				/>
+				<View style={{ ...styles.container, ...styles.pushTop }}>
 					<Text style={styles.title}>Search by category</Text>
 					{state.categories.map((item, key) => (
 						<Category
@@ -81,12 +106,23 @@ const Home = (props) => {
 						/>
 					))}
 				</View>
-				<BannerImgs image={state.banners[2]?.image} xId={state.banners[2]?.itemid} />
-				<View style={styles.container}>
-					<Text style={styles.title}>new arrivals</Text>
-					<ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
+				<BannerImgs
+					style={styles.pushTop}
+					image={state.banners[2]?.image}
+					xId={state.banners[2]?.itemid}
+				/>
+				<View style={{ ...styles.pushTop, ...styles.footerSpace }}>
+					<Text style={{ ...styles.title, ...styles.container }}>
+						new arrivals
+					</Text>
+					<ScrollView
+						style={styles.container}
+						showsHorizontalScrollIndicator={false}
+						horizontal={true}>
 						{!state.secondItems.length && (
-							<Text style={Defaults.textEmpty}>There are no new arrivals</Text>
+							<Text style={Defaults.textEmpty}>
+								There are no new arrivals
+							</Text>
 						)}
 						{state.secondItems.map((item, key) => (
 							<Item
@@ -109,15 +145,19 @@ const Home = (props) => {
 const styles = StyleSheet.create({
 	container: {
 		paddingLeft: 30,
-		paddingRight: 30,
-		paddingTop: 30,
-		paddingBottom: 200
+		paddingRight: 30
 	},
 	title: {
 		fontSize: 20,
 		fontWeight: "bold",
 		textTransform: "uppercase",
 		paddingBottom: 10
+	},
+	pushTop: {
+		marginTop: 30
+	},
+	footerSpace: {
+		paddingBottom: 150
 	}
 })
 

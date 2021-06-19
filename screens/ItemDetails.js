@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react"
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
+import {
+	View,
+	Text,
+	Image,
+	StyleSheet,
+	ScrollView,
+	TouchableOpacity
+} from "react-native"
 import { Defaults } from "../Globals/defaults"
 import Mybutton from "../components/MyButton"
 import Icon from "react-native-vector-icons/FontAwesome"
@@ -10,19 +17,23 @@ import { server } from "../settings"
 import redStore from "../redux/store"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { bookmark, addCartItem } from "../redux/actions"
+import Aicon from "../components/Aicon"
+import Toast from "react-native-toast-message"
 
 const ItemDetails = (props) => {
 	const { navigation, route } = props
 	const { itemId } = route.params
 	const [state, setState] = useState({
-		item: [],
+		item: {},
 		bookmarked: false,
 		counter: redStore.getState().cartItems[itemId]?.counter || 0,
 		button: redStore.getState().cartItems[itemId]?.counter ? true : false
 	})
 	useEffect(() => {
 		const getItem = async () => {
-			const r = await axios.get(`${server}/getItems.php`, { params: { itemid: itemId } })
+			const r = await axios.get(`${server}/getItems.php`, {
+				params: { itemid: itemId }
+			})
 			setState((state) => ({ ...state, item: r.data.item[0] }))
 		}
 
@@ -40,10 +51,6 @@ const ItemDetails = (props) => {
 
 	const addBookmark = () => {
 		redStore.dispatch(bookmark({ itemId, flag: !state.bookmarked }))
-		setState({
-			...state,
-			bookmarked: !state.bookmarked
-		})
 	}
 
 	const addToCart = () => {
@@ -56,6 +63,9 @@ const ItemDetails = (props) => {
 			oldprice: state.item.oldprice
 		}
 		redStore.dispatch(addCartItem(item))
+		Toast.show({
+			text1: "Added to cart"
+		})
 	}
 
 	const changeCounter = (counter) => {
@@ -80,13 +90,24 @@ const ItemDetails = (props) => {
 					{state.item.image && (
 						<Image
 							style={styles.img}
-							source={{ uri: `${server}/imgs/${state.item.image}` }}
+							source={{
+								uri: `${server}/imgs/${state.item.image}`
+							}}
 						/>
 					)}
 				</View>
 				<View style={styles.content}>
 					<View style={styles.stripHolder}>
-						<Text style={styles.tag}>20% Off</Text>
+						{!!state.item.oldprice && (
+							<Text style={styles.tag}>
+								{(
+									(Number(state.item.newprice) /
+										Number(state.item.oldprice)) *
+									100
+								).toFixed(2)}
+								% Off
+							</Text>
+						)}
 						<View style={styles.iconHolder}>
 							<Ionicons
 								name="share-social-outline"
@@ -94,25 +115,34 @@ const ItemDetails = (props) => {
 								color="#000"
 								style={styles.icon}
 							/>
-							{state.bookmarked ? (
-								<Ionicons
-									name="bookmark"
-									color="#000"
-									size={30}
-									style={styles.icon}
-									onPress={() => {
-										addBookmark()
-									}}
-								/>
-							) : (
-								<Ionicons
+							{!state.bookmarked && (
+								<Aicon
 									name="bookmark-outline"
 									color="#000"
 									size={30}
 									style={styles.icon}
-									onPress={() => {
-										addBookmark()
-									}}
+									onPress={addBookmark}
+									unmount={() =>
+										setState({
+											...state,
+											bookmarked: !state.bookmarked
+										})
+									}
+								/>
+							)}
+							{!!state.bookmarked && (
+								<Aicon
+									name="bookmark"
+									color="#000"
+									size={30}
+									style={styles.icon}
+									onPress={addBookmark}
+									unmount={() =>
+										setState({
+											...state,
+											bookmarked: !state.bookmarked
+										})
+									}
 								/>
 							)}
 						</View>
@@ -131,10 +161,14 @@ const ItemDetails = (props) => {
 						</Text>
 						<View style={styles.priceHolder}>
 							<Text style={styles.new}>
-								LBP {Number(state.item.newprice).toLocaleString()}
+								LBP{" "}
+								{Number(state.item.newprice).toLocaleString()}
 							</Text>
 							<View style={styles.counter}>
-								<Counter start={state.counter} onChange={changeCounter} />
+								<Counter
+									start={state.counter}
+									onChange={changeCounter}
+								/>
 							</View>
 						</View>
 						{state.button ? (
@@ -161,16 +195,26 @@ const ItemDetails = (props) => {
 					</View>
 					<View style={styles.bottom}>
 						<View style={styles.contentHolder}>
-							<Text style={styles.contentTitle}>Delivery Time</Text>
-							<Text style={styles.contentDesc}>{state.item.deliverytime}</Text>
+							<Text style={styles.contentTitle}>
+								Delivery Time
+							</Text>
+							<Text style={styles.contentDesc}>
+								{state.item.deliverytime}
+							</Text>
 						</View>
 						<View style={styles.contentHolder}>
 							<Text style={styles.contentTitle}>Description</Text>
-							<Text style={styles.contentDesc}>{state.item.description}</Text>
+							<Text style={styles.contentDesc}>
+								{state.item.description}
+							</Text>
 						</View>
 						<View style={styles.contentHolder}>
-							<Text style={styles.contentTitle}>SPECIFICATIONS</Text>
-							<Text style={styles.contentDesc}>{state.item.specifications}</Text>
+							<Text style={styles.contentTitle}>
+								SPECIFICATIONS
+							</Text>
+							<Text style={styles.contentDesc}>
+								{state.item.specifications}
+							</Text>
 						</View>
 					</View>
 				</View>
