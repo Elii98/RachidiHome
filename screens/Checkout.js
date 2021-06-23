@@ -43,7 +43,7 @@ const Checkout = (props) => {
 				subTotal += Number(cartItems[k].newprice) * cartItems[k].counter
 			}
 
-			const res = await axios.get(`${server}/getAddresses.php`, {
+			const res = await axios.get(`${server}/apigetAddresses.php`, {
 				params: { userId: user[0].id, jwt }
 			})
 			redStore.dispatch(setAddresses(res.data.addresses))
@@ -125,7 +125,9 @@ const Checkout = (props) => {
 							<Image
 								key={k}
 								style={styles.img}
-								source={{ uri: `${server}/imgs/${item.image}` }}
+								source={{
+									uri: `${server}/medias/${item.image}`
+								}}
 							/>
 						))}
 					</ScrollView>

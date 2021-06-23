@@ -41,7 +41,9 @@ const Register = (props) => {
 		useEffect(() => {
 			const getUser = async () => {
 				const userData = redStore.getState().login.user[0].id
-				const r = await axios.get(`${server}/getUser.php`, { params: { id: userData } })
+				const r = await axios.get(`${server}/apigetUser.php`, {
+					params: { id: userData }
+				})
 				setState({ ...state, user: r.data.user[0] })
 			}
 			getUser()
@@ -49,7 +51,7 @@ const Register = (props) => {
 	}
 
 	const handleRegister = async () => {
-		const r = await axios.get(`${server}/register.php`, {
+		const r = await axios.get(`${server}/apiregister.php`, {
 			params: {
 				firstName: state.firstName,
 				lastName: state.lastName,
@@ -87,7 +89,10 @@ const Register = (props) => {
 						label="Phone Number"
 						placeholder="Phone Number"
 						onChangeText={(value) => {
-							setState({ ...state, user: { phone_number: value } })
+							setState({
+								...state,
+								user: { phone_number: value }
+							})
 						}}
 						value={state.user.phone_number}
 					/>
@@ -97,14 +102,20 @@ const Register = (props) => {
 								style={styles.input}
 								placeholder="Password"
 								onChangeText={(value) => {
-									setState({ ...state, user: { password: value } })
+									setState({
+										...state,
+										user: { password: value }
+									})
 								}}
 							/>
 							<Input
 								style={styles.input}
 								placeholder="Confirm password"
 								onChangeText={(value) => {
-									setState({ ...state, confirmPassword: value })
+									setState({
+										...state,
+										confirmPassword: value
+									})
 								}}
 							/>
 							{showConfirm && (
@@ -117,8 +128,8 @@ const Register = (props) => {
 									}}>
 									<Checkbox checked={false} />
 									<Text style={{ marginLeft: 15 }}>
-										By clicking i agree, you confirm that you have read our
-										terms and services
+										By clicking i agree, you confirm that
+										you have read our terms and services
 									</Text>
 								</View>
 							)}

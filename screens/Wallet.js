@@ -19,7 +19,9 @@ const Wallet = () => {
 			const userid = redStore.getState().login.user[0].id
 			const jwt = redStore.getState().login.jwt
 
-			const r = await axios.get(`${server}/getWalletPoints.php`, { params: { userid, jwt } })
+			const r = await axios.get(`${server}/apigetWalletPoints.php`, {
+				params: { userid, jwt }
+			})
 			setState((state) => ({
 				...state,
 				points: r.data.points,
@@ -40,10 +42,16 @@ const Wallet = () => {
 					<Text style={Defaults.title}>History</Text>
 				</View>
 				{!state.history.length && (
-					<Text style={Defaults.textEmpty}>No wallet point history</Text>
+					<Text style={Defaults.textEmpty}>
+						No wallet point history
+					</Text>
 				)}
 				{state.history.map((item, k) => (
-					<WhiteTextStrip key={k} text={item.wallet_points} date={item.in_date} />
+					<WhiteTextStrip
+						key={k}
+						text={item.wallet_points}
+						date={item.in_date}
+					/>
 				))}
 			</ScrollView>
 		</SafeAreaView>

@@ -19,7 +19,9 @@ const Wishlist = () => {
 		const getBookmarks = async () => {
 			if (redStore.getState().bookmark) {
 				const ids = redStore.getState().bookmark
-				const r = await axios.get(`${server}/getBookmarks.php`, { params: { ids } })
+				const r = await axios.get(`${server}/apigetBookmarks.php`, {
+					params: { ids }
+				})
 				setState({
 					...state,
 					bookmarks: r.data
@@ -46,7 +48,9 @@ const Wishlist = () => {
 				</View>
 				<View>
 					{!state.bookmarks.length && (
-						<Text style={Defaults.textEmpty}>You have nothing in your wishlist</Text>
+						<Text style={Defaults.textEmpty}>
+							You have nothing in your wishlist
+						</Text>
 					)}
 					{state.bookmarks.map((item, key) => (
 						<View key={key} style={styles.holder}>

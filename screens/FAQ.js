@@ -12,7 +12,7 @@ const FAQ = () => {
 	})
 	useEffect(() => {
 		const getFAQs = async () => {
-			const r = await axios.get(`${server}/getFAQs.php`)
+			const r = await axios.get(`${server}/apigetFAQs.php`)
 			setState((state) => ({ ...state, faqs: r.data.faqs }))
 		}
 		getFAQs()
@@ -22,7 +22,9 @@ const FAQ = () => {
 			<Header />
 			<ScrollView contentContainerStyle={styles.container}>
 				<View style={styles.strip}>
-					<Text style={Defaults.title}>Frequently asked questions</Text>
+					<Text style={Defaults.title}>
+						Frequently asked questions
+					</Text>
 				</View>
 				{state.faqs.map((item, key) => (
 					<View key={key} xId={item.id}>

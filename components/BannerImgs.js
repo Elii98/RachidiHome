@@ -7,7 +7,7 @@ const BannerImgs = (props) => {
 	return (
 		<Image
 			style={{ ...styles.image, ...style }}
-			source={{ uri: `${server}/imgs/${image}` }}
+			source={{ uri: `${server}/medias/${image}` }}
 		/>
 	)
 }

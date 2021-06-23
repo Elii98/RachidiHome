@@ -20,7 +20,9 @@ const SearchPage = () => {
 	const handleSearch = async (value) => {
 		clearTimeout(timeOut)
 		timeOut = setTimeout(async () => {
-			const r = await axios.get(`${server}/search.php`, { params: { search: value } })
+			const r = await axios.get(`${server}/apisearch.php`, {
+				params: { search: value }
+			})
 			setState({ ...state, search: r.data.items })
 		}, 500)
 	}

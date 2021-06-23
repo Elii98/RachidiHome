@@ -1,5 +1,12 @@
 import React from "react"
-import { Pressable, ScrollView, StyleSheet, View, Text, Image } from "react-native"
+import {
+	Pressable,
+	ScrollView,
+	StyleSheet,
+	View,
+	Text,
+	Image
+} from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import MyButton from "../components/MyButton"
@@ -14,9 +21,18 @@ const ReviewOrder = (props) => {
 				<View style={styles.back}>
 					<View style={{ flexDirection: "row" }}>
 						<Pressable onPress={() => navigation.goBack()}>
-							<Ionicons name="chevron-back" size={30} color="#000" />
+							<Ionicons
+								name="chevron-back"
+								size={30}
+								color="#000"
+							/>
 						</Pressable>
-						<Text style={{ alignSelf: "center", marginLeft: 15, fontSize: 20 }}>
+						<Text
+							style={{
+								alignSelf: "center",
+								marginLeft: 15,
+								fontSize: 20
+							}}>
 							Checkout ...
 						</Text>
 					</View>
@@ -25,10 +41,21 @@ const ReviewOrder = (props) => {
 					<View style={styles.strip}>
 						<Text style={styles.title}>Cart items</Text>
 					</View>
-					<ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-						<Image style={styles.img} source={{ uri: `${server}/imgs/img1.jpg` }} />
-						<Image style={styles.img} source={{ uri: `${server}/imgs/img1.jpg` }} />
-						<Image style={styles.img} source={{ uri: `${server}/imgs/img1.jpg` }} />
+					<ScrollView
+						showsHorizontalScrollIndicator={false}
+						horizontal={true}>
+						<Image
+							style={styles.img}
+							source={{ uri: `${server}/medias/img1.jpg` }}
+						/>
+						<Image
+							style={styles.img}
+							source={{ uri: `${server}/medias/img1.jpg` }}
+						/>
+						<Image
+							style={styles.img}
+							source={{ uri: `${server}/medias/img1.jpg` }}
+						/>
 					</ScrollView>
 				</View>
 				<View style={styles.line}></View>

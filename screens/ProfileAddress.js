@@ -1,6 +1,12 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
-import { Text, View, ScrollView, StyleSheet, TouchableOpacity } from "react-native"
+import {
+	Text,
+	View,
+	ScrollView,
+	StyleSheet,
+	TouchableOpacity
+} from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import Icon from "react-native-vector-icons/FontAwesome"
 import { Defaults } from "../Globals/defaults"
@@ -31,7 +37,9 @@ const ProfileAddress = (props) => {
 		const getAddresses = async () => {
 			const userId = redStore.getState().login.user[0].id
 			const jwt = redStore.getState().login.jwt
-			const r = await axios.get(`${server}/getAddresses.php`, { params: { userId, jwt } })
+			const r = await axios.get(`${server}/apigetAddresses.php`, {
+				params: { userId, jwt }
+			})
 
 			redStore.dispatch(setAddresses(r.data.addresses))
 		}
@@ -53,7 +61,7 @@ const ProfileAddress = (props) => {
 
 		redStore.dispatch(setAddresses(addresses))
 
-		axios.get(`${server}/changeMainAddress.php`, {
+		axios.get(`${server}/apichangeMainAddress.php`, {
 			params: { addressid: id, userid: userId, jwt }
 		})
 	}
@@ -64,12 +72,17 @@ const ProfileAddress = (props) => {
 
 			<ScrollView>
 				{!state.addresses && (
-					<Text style={Defaults.textEmpty}>You have no addresses added</Text>
+					<Text style={Defaults.textEmpty}>
+						You have no addresses added
+					</Text>
 				)}
 				{Object.values(state.addresses).map((item, key) => (
 					<TouchableOpacity
 						onPress={() => {
-							navigation.navigate("AddAddress", { itemid: item.id, update: 1 })
+							navigation.navigate("AddAddress", {
+								itemid: item.id,
+								update: 1
+							})
 						}}
 						key={key}
 						itemid={item.id}
@@ -86,7 +99,9 @@ const ProfileAddress = (props) => {
 								onPress={() => {
 									handleChangeMain(item.id)
 								}}>
-								<Text style={styles.btnText}>Make main address</Text>
+								<Text style={styles.btnText}>
+									Make main address
+								</Text>
 							</TouchableOpacity>
 						)}
 					</TouchableOpacity>

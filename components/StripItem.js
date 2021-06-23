@@ -13,9 +13,14 @@ const StripItem = (props) => {
 			onPress={() => {
 				navigation.navigate("ItemDetails", { itemId: itemid })
 			}}>
-			<Image style={styles.img} source={{ uri: `${server}/imgs/${image}` }} />
+			<Image
+				style={styles.img}
+				source={{ uri: `${server}/medias/${image}` }}
+			/>
 			<View style={styles.info}>
-				<Text style={styles.category}>in Furniture and Home appliances</Text>
+				<Text style={styles.category}>
+					in Furniture and Home appliances
+				</Text>
 				<Text style={styles.title}>{title}</Text>
 				<Text style={styles.new}>LBP {newprice}</Text>
 			</View>

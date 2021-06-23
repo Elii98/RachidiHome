@@ -19,7 +19,7 @@ const ProfileOrders = () => {
 		const userid = redStore.getState().login.user[0].id
 		const jwt = redStore.getState().login.jwt
 		const getOrderHistory = async () => {
-			const items = await axios.get(`${server}/getOrderHistory.php`, {
+			const items = await axios.get(`${server}/apigetOrderHistory.php`, {
 				params: { userid, jwt }
 			})
 			setState((state) => ({ ...state, items: items.data.items }))
@@ -30,7 +30,9 @@ const ProfileOrders = () => {
 	return (
 		<SafeAreaView style={styles.container}>
 			<BackHeader text="Your ORders" />
-			<ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={styles.content}>
 				<View>
 					{state.items.map((item, key) => (
 						<View key={key} style={styles.holder}>

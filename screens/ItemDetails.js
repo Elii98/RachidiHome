@@ -31,7 +31,7 @@ const ItemDetails = (props) => {
 	})
 	useEffect(() => {
 		const getItem = async () => {
-			const r = await axios.get(`${server}/getItems.php`, {
+			const r = await axios.get(`${server}/apigetItems.php`, {
 				params: { itemid: itemId }
 			})
 			setState((state) => ({ ...state, item: r.data.item[0] }))
@@ -91,7 +91,7 @@ const ItemDetails = (props) => {
 						<Image
 							style={styles.img}
 							source={{
-								uri: `${server}/imgs/${state.item.image}`
+								uri: `${server}/medias/${state.item.image}`
 							}}
 						/>
 					)}

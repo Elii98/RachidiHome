@@ -37,7 +37,7 @@ const SelectPayment = (props) => {
 
 	const checkOut = async () => {
 		const { user, jwt } = redStore.getState().login
-		const res = await axios.post(`${server}/post-checkout.php`, {
+		const res = await axios.post(`${server}/apipost-checkout.php`, {
 			user_id: user[0].id,
 			jwt,
 			addressId,

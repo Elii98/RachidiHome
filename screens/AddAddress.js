@@ -33,7 +33,10 @@ const AddAddress = (props) => {
 			pageTitle = "Update your address"
 			buttonText = "Update"
 
-			setState((state) => ({ ...state, ...redStore.getState().addresses[addressId] }))
+			setState((state) => ({
+				...state,
+				...redStore.getState().addresses[addressId]
+			}))
 		}
 	}, [])
 
@@ -43,7 +46,7 @@ const AddAddress = (props) => {
 		addresses[addressId] = state
 		redStore.dispatch(setAddresses(addresses))
 
-		axios.get(`${server}/addAddress.php`, {
+		axios.get(`${server}/apiaddAddress.php`, {
 			params: {
 				address_id: addressId,
 				nickname: state.nickname,
@@ -70,7 +73,9 @@ const AddAddress = (props) => {
 			<ScrollView>
 				<View style={styles.input}>
 					<Input
-						onChangeText={(v) => setState({ ...state, nickname: v })}
+						onChangeText={(v) =>
+							setState({ ...state, nickname: v })
+						}
 						label="Address Nickname"
 						placeholder="Address Nickname"
 						defaultValue={state.nickname}
@@ -86,7 +91,9 @@ const AddAddress = (props) => {
 				</View>
 				<View style={styles.input}>
 					<Input
-						onChangeText={(v) => setState({ ...state, streetname: v })}
+						onChangeText={(v) =>
+							setState({ ...state, streetname: v })
+						}
 						label="Street Name"
 						placeholder="Street Name"
 						defaultValue={state.streetname}
@@ -94,7 +101,9 @@ const AddAddress = (props) => {
 				</View>
 				<View style={styles.input}>
 					<Input
-						onChangeText={(v) => setState({ ...state, buildingname: v })}
+						onChangeText={(v) =>
+							setState({ ...state, buildingname: v })
+						}
 						label="Building Name"
 						placeholder="Building Name"
 						defaultValue={state.buildingname}
@@ -102,7 +111,9 @@ const AddAddress = (props) => {
 				</View>
 				<View style={styles.input}>
 					<Input
-						onChangeText={(v) => setState({ ...state, landmark: v })}
+						onChangeText={(v) =>
+							setState({ ...state, landmark: v })
+						}
 						label="Landmark"
 						placeholder="Landmark"
 						defaultValue={state.landmark}
@@ -116,7 +127,11 @@ const AddAddress = (props) => {
 						defaultValue={state.details}
 					/>
 				</View>
-				<MyButton onPress={handleAddAddress} color={Defaults.secondary} text={buttonText} />
+				<MyButton
+					onPress={handleAddAddress}
+					color={Defaults.secondary}
+					text={buttonText}
+				/>
 			</ScrollView>
 		</View>
 	)

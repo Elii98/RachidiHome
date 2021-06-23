@@ -24,11 +24,16 @@ const CartItem = (props) => {
 
 	return (
 		<View style={styles.container}>
-			<Image style={styles.img} source={{ uri: `${server}/imgs/${image}` }} />
+			<Image
+				style={styles.img}
+				source={{ uri: `${server}/medias/${image}` }}
+			/>
 			<View style={styles.info}>
 				<Text style={styles.title}>{text}</Text>
 				<View style={styles.holder}>
-					<Text style={styles.price}>LBP {Number(newprice).toLocaleString()}</Text>
+					<Text style={styles.price}>
+						LBP {Number(newprice).toLocaleString()}
+					</Text>
 				</View>
 				<View style={styles.counterContainer}>
 					<Counter start={state.counter} onChange={changeCounter} />

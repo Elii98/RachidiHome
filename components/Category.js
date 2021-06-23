@@ -1,6 +1,12 @@
 import { useNavigation } from "@react-navigation/core"
 import React from "react"
-import { Image, View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native"
+import {
+	Image,
+	View,
+	Text,
+	StyleSheet,
+	TouchableWithoutFeedback
+} from "react-native"
 import { Defaults } from "../Globals/defaults"
 import { server } from "../settings"
 
@@ -13,7 +19,10 @@ const Category = (props) => {
 				navigation.navigate("Search", { catid: itemid, text: text })
 			}}>
 			<View style={styles.container}>
-				<Image style={styles.img} source={{ uri: `${server}/imgs/${image}` }} />
+				<Image
+					style={styles.img}
+					source={{ uri: `${server}/medias/${image}` }}
+				/>
 				<View style={styles.overlay}></View>
 				<Text style={styles.title}>{text}</Text>
 			</View>
