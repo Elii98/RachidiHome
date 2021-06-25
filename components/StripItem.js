@@ -15,7 +15,7 @@ const StripItem = (props) => {
 			}}>
 			<Image
 				style={styles.img}
-				source={{ uri: `${server}/medias/${image}` }}
+				source={{ uri: `${server}/media/${image}` }}
 			/>
 			<View style={styles.info}>
 				<Text style={styles.category}>

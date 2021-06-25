@@ -4,7 +4,7 @@ import { TouchableRipple } from "react-native-paper"
 import { Defaults } from "../Globals/defaults"
 
 const MyButton = (props) => {
-	const { text, color, size, ...attr } = props
+	const { text, color, center, size, style, ...attr } = props
 
 	let sizeStyle = {}
 	switch (size) {
@@ -18,10 +18,18 @@ const MyButton = (props) => {
 		}
 	}
 
+	const centerStyle = center ? styles.pos : {}
+
 	return (
-		<View style={{ ...styles.btn, backgroundColor: color }}>
+		<View
+			style={{
+				...styles.btn,
+				backgroundColor: color,
+				...style,
+				...centerStyle
+			}}>
 			<TouchableRipple
-				style={sizeStyle}
+				style={{ ...sizeStyle, ...centerStyle }}
 				rippleColor="rgba(255, 255, 255, .32)"
 				{...attr}>
 				<Text style={styles.text}>{text}</Text>
@@ -47,6 +55,11 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		color: Defaults.white,
 		textTransform: "uppercase"
+	},
+	pos: {
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center"
 	}
 })
 export default MyButton

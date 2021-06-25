@@ -43,7 +43,7 @@ const Search = (props) => {
 	}, [])
 	useEffect(() => {
 		const getItems = async () => {
-			const r = await axios.get(`${server}/apigetCatItems.php`, {
+			const r = await axios.get(`${server}/api/getCatItems.php`, {
 				params: {
 					id: route.params.catid,
 					sort: state.sort,

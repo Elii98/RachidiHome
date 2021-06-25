@@ -43,7 +43,7 @@ const Checkout = (props) => {
 				subTotal += Number(cartItems[k].newprice) * cartItems[k].counter
 			}
 
-			const res = await axios.get(`${server}/apigetAddresses.php`, {
+			const res = await axios.get(`${server}/api/getAddresses.php`, {
 				params: { userId: user[0].id, jwt }
 			})
 			redStore.dispatch(setAddresses(res.data.addresses))
@@ -126,7 +126,7 @@ const Checkout = (props) => {
 								key={k}
 								style={styles.img}
 								source={{
-									uri: `${server}/medias/${item.image}`
+									uri: `${server}/media/${item.image}`
 								}}
 							/>
 						))}

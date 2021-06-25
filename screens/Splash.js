@@ -17,7 +17,7 @@ const Splash = (props) => {
 	const [password, setPassword] = useState()
 
 	const handleLogin = async () => {
-		const r = await axios.get(`${server}/apilogin.php`, {
+		const r = await axios.get(`${server}/api/login.php`, {
 			params: { phone, password }
 		})
 		if (r.data.user === 0) {

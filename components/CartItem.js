@@ -26,7 +26,7 @@ const CartItem = (props) => {
 		<View style={styles.container}>
 			<Image
 				style={styles.img}
-				source={{ uri: `${server}/medias/${image}` }}
+				source={{ uri: `${server}/media/${image}` }}
 			/>
 			<View style={styles.info}>
 				<Text style={styles.title}>{text}</Text>

@@ -19,7 +19,7 @@ const Wallet = () => {
 			const userid = redStore.getState().login.user[0].id
 			const jwt = redStore.getState().login.jwt
 
-			const r = await axios.get(`${server}/apigetWalletPoints.php`, {
+			const r = await axios.get(`${server}/api/getWalletPoints.php`, {
 				params: { userid, jwt }
 			})
 			setState((state) => ({

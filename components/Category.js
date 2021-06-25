@@ -21,7 +21,7 @@ const Category = (props) => {
 			<View style={styles.container}>
 				<Image
 					style={styles.img}
-					source={{ uri: `${server}/medias/${image}` }}
+					source={{ uri: `${server}/media/${image}` }}
 				/>
 				<View style={styles.overlay}></View>
 				<Text style={styles.title}>{text}</Text>

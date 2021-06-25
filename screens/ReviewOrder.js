@@ -46,15 +46,15 @@ const ReviewOrder = (props) => {
 						horizontal={true}>
 						<Image
 							style={styles.img}
-							source={{ uri: `${server}/medias/img1.jpg` }}
+							source={{ uri: `${server}/media/img1.jpg` }}
 						/>
 						<Image
 							style={styles.img}
-							source={{ uri: `${server}/medias/img1.jpg` }}
+							source={{ uri: `${server}/media/img1.jpg` }}
 						/>
 						<Image
 							style={styles.img}
-							source={{ uri: `${server}/medias/img1.jpg` }}
+							source={{ uri: `${server}/media/img1.jpg` }}
 						/>
 					</ScrollView>
 				</View>

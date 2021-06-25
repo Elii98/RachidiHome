@@ -39,7 +39,7 @@ const Item = (props) => {
 				}}>
 				<Image
 					style={styles.img}
-					source={{ uri: `${server}/medias/${image}` }}
+					source={{ uri: `${server}/media/${image}` }}
 				/>
 				<Text
 					style={[

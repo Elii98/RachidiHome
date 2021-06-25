@@ -37,7 +37,7 @@ const SelectPayment = (props) => {
 
 	const checkOut = async () => {
 		const { user, jwt } = redStore.getState().login
-		const res = await axios.post(`${server}/apipost-checkout.php`, {
+		const res = await axios.post(`${server}/api/post-checkout.php`, {
 			user_id: user[0].id,
 			jwt,
 			addressId,
@@ -52,14 +52,14 @@ const SelectPayment = (props) => {
 			<Text style={{ ...Defaults.title, ...Defaults.pad }}>
 				Payment Method
 			</Text>
-			{subTotal >= 5000000 && (
+			{/* {subTotal >= 5000000 && (
 				<Text style={{ ...Styles.texts.error, ...Defaults.pad }}>
 					Cash on delivery can only be selected if price is under
 					5,000,000
 				</Text>
-			)}
+			)} */}
 			<TouchableRipple
-				disabled={subTotal >= 5000000}
+				// disabled={subTotal >= 5000000}
 				style={style.item}
 				rippleColor="rgba(0,0,0,0.1)"
 				onPress={() => handleCheck("cash")}>
@@ -74,7 +74,7 @@ const SelectPayment = (props) => {
 				</>
 			</TouchableRipple>
 
-			<TouchableRipple
+			{/* <TouchableRipple
 				style={style.item}
 				rippleColor="rgba(0,0,0,0.1)"
 				onPress={() => handleCheck("credit")}>
@@ -87,7 +87,7 @@ const SelectPayment = (props) => {
 					/>
 					<Text>Credit Card</Text>
 				</>
-			</TouchableRipple>
+			</TouchableRipple> */}
 			<View style={Defaults.pad}>
 				<Text style={Styles.texts.error}>{state.error}</Text>
 				<MyButton

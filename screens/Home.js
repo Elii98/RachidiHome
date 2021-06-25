@@ -29,9 +29,9 @@ const Home = (props) => {
 	}, [getHome])
 
 	const getHome = async () => {
-		const banners = await axios.post(`${server}/apigetBanners.php`)
-		const categories = await axios.get(`${server}/apigetCategories.php`)
-		const items = await axios.get(`${server}/apigetItems.php`)
+		const banners = await axios.post(`${server}/api/getBanners.php`)
+		const categories = await axios.get(`${server}/api/getCategories.php`)
+		const items = await axios.get(`${server}/api/getItems.php`)
 
 		setState((state) => ({
 			...state,

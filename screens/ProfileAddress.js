@@ -37,7 +37,7 @@ const ProfileAddress = (props) => {
 		const getAddresses = async () => {
 			const userId = redStore.getState().login.user[0].id
 			const jwt = redStore.getState().login.jwt
-			const r = await axios.get(`${server}/apigetAddresses.php`, {
+			const r = await axios.get(`${server}/api/getAddresses.php`, {
 				params: { userId, jwt }
 			})
 
@@ -61,7 +61,7 @@ const ProfileAddress = (props) => {
 
 		redStore.dispatch(setAddresses(addresses))
 
-		axios.get(`${server}/apichangeMainAddress.php`, {
+		axios.get(`${server}/api/changeMainAddress.php`, {
 			params: { addressid: id, userid: userId, jwt }
 		})
 	}

@@ -19,7 +19,7 @@ const Wishlist = () => {
 		const getBookmarks = async () => {
 			if (redStore.getState().bookmark) {
 				const ids = redStore.getState().bookmark
-				const r = await axios.get(`${server}/apigetBookmarks.php`, {
+				const r = await axios.get(`${server}/api/getBookmarks.php`, {
 					params: { ids }
 				})
 				setState({

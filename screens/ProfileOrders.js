@@ -19,7 +19,7 @@ const ProfileOrders = () => {
 		const userid = redStore.getState().login.user[0].id
 		const jwt = redStore.getState().login.jwt
 		const getOrderHistory = async () => {
-			const items = await axios.get(`${server}/apigetOrderHistory.php`, {
+			const items = await axios.get(`${server}/api/getOrderHistory.php`, {
 				params: { userid, jwt }
 			})
 			setState((state) => ({ ...state, items: items.data.items }))

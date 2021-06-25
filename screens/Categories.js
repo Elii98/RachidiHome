@@ -16,7 +16,7 @@ const Categories = (props) => {
 
 	useEffect(() => {
 		const getCategories = async () => {
-			const r = await axios.get(`${server}/apigetCategories.php`)
+			const r = await axios.get(`${server}/api/getCategories.php`)
 			setState((state) => ({ ...state, categories: r.data.category }))
 		}
 		getCategories()

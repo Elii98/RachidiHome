@@ -12,7 +12,7 @@ const FAQ = () => {
 	})
 	useEffect(() => {
 		const getFAQs = async () => {
-			const r = await axios.get(`${server}/apigetFAQs.php`)
+			const r = await axios.get(`${server}/api/getFAQs.php`)
 			setState((state) => ({ ...state, faqs: r.data.faqs }))
 		}
 		getFAQs()

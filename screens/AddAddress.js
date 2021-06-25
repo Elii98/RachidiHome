@@ -46,7 +46,7 @@ const AddAddress = (props) => {
 		addresses[addressId] = state
 		redStore.dispatch(setAddresses(addresses))
 
-		axios.get(`${server}/apiaddAddress.php`, {
+		axios.get(`${server}/api/addAddress.php`, {
 			params: {
 				address_id: addressId,
 				nickname: state.nickname,

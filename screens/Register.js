@@ -41,7 +41,7 @@ const Register = (props) => {
 		useEffect(() => {
 			const getUser = async () => {
 				const userData = redStore.getState().login.user[0].id
-				const r = await axios.get(`${server}/apigetUser.php`, {
+				const r = await axios.get(`${server}/api/getUser.php`, {
 					params: { id: userData }
 				})
 				setState({ ...state, user: r.data.user[0] })
@@ -51,7 +51,7 @@ const Register = (props) => {
 	}
 
 	const handleRegister = async () => {
-		const r = await axios.get(`${server}/apiregister.php`, {
+		const r = await axios.get(`${server}/api/register.php`, {
 			params: {
 				firstName: state.firstName,
 				lastName: state.lastName,
